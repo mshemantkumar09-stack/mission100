@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>100-Day Mission — CAT &amp; PGCET Karnataka MBA</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#121D27">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="100-Day Mission">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#121D27;
+    --panel:#1A2733;
+    --panel-2:#223140;
+    --line: rgba(237,238,231,0.09);
+    --text:#ECEDE7;
+    --muted:#8FA2B0;
+    --amber:#E3A23C;
+    --amber-soft: rgba(227,162,60,0.16);
+    --teal:#5FAE94;
+    --teal-soft: rgba(95,174,148,0.16);
+    --good:#4FAE78;
+    --good-soft: rgba(79,174,120,0.14);
+    --bad:#DB5B44;
+    --bad-soft: rgba(219,91,68,0.14);
+    box-sizing:border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *{box-sizing:inherit;}
+  html{scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior:smooth;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--text);
+    font-family:'Inter', system-ui, -apple-system, sans-serif;
+    line-height:1.55;
+  }
+  h1,h2,h3,.serif{font-family:'Lora', Georgia, 'Times New Roman', serif;}
+  a{color:var(--amber);}
+
+  .topbar{
+    position:sticky; top:0; z-index:40;
+    padding: calc(14px + env(safe-area-inset-top, 0px)) 20px 14px;
+    background: linear-gradient(180deg, rgba(18,29,39,0.98), rgba(18,29,39,0.90));
+    backdrop-filter: blur(6px);
+    border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .brand{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;}
+  .brand .mark{
+    width:34px; height:34px; border-radius:9px;
+    background: linear-gradient(135deg, var(--amber), #B9782A);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Lora', serif; font-weight:700; color:#1A1206; font-size:15px;
+    flex-shrink:0;
+  }
+  .brand h1{font-size:17px; margin:0; font-weight:600; letter-spacing:0.2px;}
+  .brand .sub{font-size:12px; color:var(--muted); margin:0;}
+  .day-pill{
+    font-size:13px; font-weight:600; color:var(--amber);
+    background:var(--amber-soft); border:1px solid rgba(227,162,60,0.35);
+    padding:6px 12px; border-radius:100px; white-space:nowrap;
+  }
+
+  .tabs-row{
+    display:flex; gap:6px; padding:12px 20px 0; overflow-x:auto;
+    border-bottom:1px solid var(--line);
+  }
+  .tab-btn{
+    appearance:none; border:none; background:transparent; color:var(--muted);
+    font-family:inherit; font-size:14px; font-weight:600; cursor:pointer;
+    padding:10px 16px; border-bottom:2px solid transparent; white-space:nowrap;
+    transition: color .15s ease;
+  }
+  .tab-btn:hover{color:var(--text);}
+  .tab-btn.active{color:var(--text); border-bottom-color:var(--amber);}
+  .tab-btn .tag{
+    font-size:10px; margin-left:6px; padding:1px 6px; border-radius:5px;
+    background:var(--panel-2); color:var(--muted); font-weight:600;
+  }
+
+  .subtabs{display:flex; gap:8px; padding:16px 20px 0; flex-wrap:wrap;}
+  .subtab-btn{
+    appearance:none; cursor:pointer; font-family:inherit; font-size:13px; font-weight:600;
+    color:var(--muted); background:var(--panel); border:1px solid var(--line);
+    padding:8px 14px; border-radius:9px; transition: all .15s ease;
+  }
+  .subtab-btn.active{color:var(--ink); background:var(--amber); border-color:var(--amber);}
+  .subtab-btn:not(.active):hover{color:var(--text); border-color:rgba(255,255,255,0.2);}
+
+  main{max-width:920px; margin:0 auto; padding:22px 20px 90px;}
+  .view{display:none;}
+  .view.active{display:block; animation: rise .3s ease;}
+  .subview{display:none;}
+  .subview.active{display:block; animation: rise .35s ease;}
+  @media (prefers-reduced-motion: reduce){ .subview.active, .view.active{animation:none;} }
+  @keyframes rise{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+  .tab-btn, .subtab-btn, .reset-btn, .day-cell, .opt-btn{ -webkit-tap-highlight-color: transparent; }
+  * { scroll-behavior: smooth; }
+  .q-card{ transition: opacity .2s ease; }
+  .loading-hint{ font-size:13px; color:var(--muted); padding:20px 0; text-align:center; }
+
+  section.block{margin-bottom:34px;}
+  .eyebrow{color:var(--muted); font-size:12.5px; margin:0 0 6px;}
+  h2.section-title{font-size:22px; margin:0 0 4px; font-weight:600;}
+  p.lede{color:var(--muted); font-size:14.5px; margin:0 0 20px; max-width:64ch;}
+
+  .countdown-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:26px;}
+  @media (max-width:600px){ .countdown-grid{grid-template-columns:1fr;} }
+  .count-card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px 20px;}
+  .count-card.cat{border-top:3px solid var(--teal);}
+  .count-card.pgcet{border-top:3px solid var(--amber);}
+  .count-card .exam-name{font-size:13px; font-weight:700; letter-spacing:0.3px; margin:0 0 2px;}
+  .count-card.cat .exam-name{color:var(--teal);}
+  .count-card.pgcet .exam-name{color:var(--amber);}
+  .count-card .big-num{font-family:'Lora',serif; font-size:38px; font-weight:600; margin:6px 0 0; line-height:1;}
+  .count-card .unit{font-size:13px; color:var(--muted); margin-left:6px; font-family:'Inter',sans-serif;}
+  .count-card .window{font-size:12.5px; color:var(--muted); margin-top:8px;}
+
+  .tracker-card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px; margin-bottom:26px;}
+  .tracker-head{display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:12px;}
+  .tracker-head h3{margin:0; font-size:16px;}
+  .tracker-stat{font-size:13px; color:var(--muted);}
+  .tracker-stat b{color:var(--text);}
+  .progress-track{height:10px; background:var(--panel-2); border-radius:100px; overflow:hidden; margin-bottom:16px;}
+  .progress-fill{height:100%; background:linear-gradient(90deg, var(--amber), var(--teal)); width:0%; transition:width .4s ease;}
+  .day-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(28px,1fr)); gap:5px;}
+  .day-cell{
+    aspect-ratio:1; border-radius:6px; background:var(--panel-2); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:10px; color:var(--muted);
+    cursor:pointer; user-select:none; transition: background .12s ease, color .12s ease, transform .1s ease;
+  }
+  .day-cell:hover{border-color:rgba(255,255,255,0.3);}
+  .day-cell:active{transform:scale(0.92);}
+  .day-cell.done{background:var(--good); color:#0E1A12; font-weight:700; border-color:var(--good);}
+  .motivate-line{margin-top:14px; font-size:13.5px; color:var(--amber); font-style:italic; min-height:20px;}
+
+  .weekly-table{width:100%; border-collapse:collapse; font-size:13.5px; margin-top:8px;}
+  .weekly-table th{text-align:left; font-size:11.5px; color:var(--muted); padding:8px 10px; border-bottom:1px solid var(--line); font-weight:600;}
+  .weekly-table td{padding:10px; border-bottom:1px solid var(--line); vertical-align:top;}
+  .weekly-table .day-range{color:var(--amber); font-weight:700; white-space:nowrap; font-size:12.5px;}
+  .weekly-table tr:hover td{background:rgba(255,255,255,0.02);}
+
+  .syll-grid{display:grid; gap:14px;}
+  .syll-card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px;}
+  .syll-card h4{margin:0 0 4px; font-size:15px; display:flex; align-items:center; gap:8px;}
+  .syll-topics{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px;}
+  .syll-topics span{background:var(--panel-2); border:1px solid var(--line); border-radius:7px; padding:5px 10px; font-size:12.5px; color:var(--text);}
+  .dot{width:9px; height:9px; border-radius:50%; flex-shrink:0;}
+
+  .pattern-strip{display:flex; gap:12px; flex-wrap:wrap; margin:16px 0 22px;}
+  .pattern-chip{background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:10px 14px; font-size:12.5px; color:var(--muted); min-width:120px;}
+  .pattern-chip b{display:block; color:var(--text); font-size:15px; font-family:'Lora',serif; margin-bottom:2px;}
+
+  .phase{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin-bottom:14px;}
+  .phase-head{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px;}
+  .phase-head .range{font-family:'Lora',serif; font-size:17px; font-weight:600;}
+  .phase-head .range em{font-style:normal; color:var(--muted); font-size:12.5px; font-family:'Inter',sans-serif; display:block; margin-top:2px;}
+  .phase-num{width:30px; height:30px; border-radius:8px; background:var(--amber-soft); color:var(--amber); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex-shrink:0;}
+  .phase-focus{font-size:14px; margin:0 0 10px;}
+  .phase-focus b{color:var(--amber);}
+  .day-breakdown{width:100%; border-collapse:collapse; font-size:12.8px; margin:6px 0 10px;}
+  .day-breakdown td{padding:6px 8px; border-bottom:1px dashed var(--line); vertical-align:top;}
+  .day-breakdown td:first-child{width:64px; color:var(--amber); font-weight:700; white-space:nowrap;}
+  .day-breakdown tr:last-child td{border-bottom:none;}
+  .phase-resource{font-size:12.5px; color:var(--muted); margin:0; padding-top:6px; border-top:1px solid var(--line);}
+
+  .quiz-toolbar{
+    display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;
+    background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:12px 16px; margin-bottom:20px;
+  }
+  .quiz-toolbar-left{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .quiz-score{font-size:13.5px; color:var(--muted);}
+  .quiz-score b{color:var(--text); font-size:15px;}
+  .filter-select{
+    background:var(--panel-2); color:var(--text); border:1px solid var(--line); border-radius:8px;
+    padding:7px 10px; font-size:12.5px; font-family:inherit; cursor:pointer;
+  }
+  .reset-btn{
+    appearance:none; cursor:pointer; background:var(--panel-2); color:var(--text); border:1px solid var(--line);
+    padding:7px 13px; border-radius:8px; font-size:12.5px; font-weight:600; font-family:inherit;
+  }
+  .reset-btn:hover{border-color:rgba(255,255,255,0.3);}
+
+  .q-card{background:var(--panel); border:1px solid var(--line); border-radius:13px; padding:18px 20px; margin-bottom:16px;}
+  .q-meta{display:flex; gap:8px; align-items:center; margin-bottom:8px;}
+  .q-tag{font-size:10.5px; font-weight:700; letter-spacing:0.3px; color:var(--teal); background:var(--teal-soft); padding:3px 8px; border-radius:6px;}
+  .q-num{font-size:12px; color:var(--muted);}
+  .q-text{font-size:15px; margin:0 0 14px; font-weight:500;}
+  .opt-list{display:grid; gap:8px;}
+  .opt-btn{
+    text-align:left; width:100%; appearance:none; cursor:pointer; font-family:inherit; font-size:14px;
+    background:var(--panel-2); color:var(--text); border:1px solid var(--line); border-radius:9px;
+    padding:11px 14px; display:flex; align-items:center; gap:10px; transition: all .12s ease;
+  }
+  .opt-btn:hover:not(:disabled){border-color:rgba(255,255,255,0.3); background:#28394A;}
+  .opt-btn:disabled{cursor:default;}
+  .opt-letter{width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,0.08); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:11.5px; font-weight:700; color:var(--muted);}
+  .opt-btn.correct{background:var(--good-soft); border-color:var(--good);}
+  .opt-btn.correct .opt-letter{background:var(--good); color:#0E1A12;}
+  .opt-btn.wrong{background:var(--bad-soft); border-color:var(--bad);}
+  .opt-btn.wrong .opt-letter{background:var(--bad); color:#2B0E08;}
+  .explain{margin-top:14px; padding:14px 16px; border-radius:10px; font-size:13.5px; line-height:1.6; display:none; border:1px solid var(--line);}
+  .explain.show{display:block; animation: rise .3s ease;}
+  .explain.ok{background:var(--good-soft); border-color:var(--good);}
+  .explain.no{background:var(--bad-soft); border-color:var(--bad);}
+  .explain b{display:block; margin-bottom:4px; font-size:13px;}
+  .explain.ok b{color:var(--good);}
+  .explain.no b{color:var(--bad);}
+
+  footer{text-align:center; color:var(--muted); font-size:12px; padding:30px 20px 40px; border-top:1px solid var(--line); margin-top:20px;}
+
+  @media (max-width: 560px){
+    .brand h1{font-size:15px;}
+    .day-pill{font-size:12px; padding:5px 10px;}
+    .count-card .big-num{font-size:32px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="mark">M</div>
+    <div>
+      <h1>100-Day Mission</h1>
+      <p class="sub">CAT + PGCET Karnataka MBA — built for Hemant</p>
+    </div>
+  </div>
+  <div style="display:flex; align-items:center; gap:10px;">
+    <button id="installBtn" style="display:none; appearance:none; cursor:pointer; font-family:inherit; font-size:12.5px; font-weight:600; color:var(--ink); background:var(--amber); border:none; padding:7px 13px; border-radius:100px; white-space:nowrap;">Install App</button>
+    <div class="day-pill" id="dayPill">Day 1 of 100</div>
+  </div>
+</header>
+<div id="iosInstallTip" style="display:none; background:var(--amber-soft); border-bottom:1px solid rgba(227,162,60,0.35); color:var(--text); font-size:12.5px; padding:10px 20px; text-align:center;">
+  Add this to your Home Screen: tap <b>Share</b> → <b>Add to Home Screen</b>. <span style="cursor:pointer; text-decoration:underline; margin-left:4px;" id="iosTipDismiss">Dismiss</span>
+</div>
+
+<nav class="tabs-row">
+  <button class="tab-btn active" data-view="overview">Overview</button>
+  <button class="tab-btn" data-view="cat">CAT <span class="tag">teal</span></button>
+  <button class="tab-btn" data-view="pgcet">PGCET Karnataka <span class="tag">amber</span></button>
+</nav>
+
+<main>
+
+  <div class="view active" id="view-overview">
+    <section class="block">
+      <p class="eyebrow">Where things stand</p>
+      <h2 class="section-title">One plan, two exams</h2>
+      <p class="lede">PGCET and CAT share most of their Quant, Reasoning and English DNA. This 100-day block builds that shared foundation first, layers CAT's harder Algebra/Geometry/DILR and PGCET's GK/Computer Awareness on top, then ends in mocks for both. Day 1 starts today — every day below has its own task, not just a weekly theme.</p>
+
+      <div class="countdown-grid">
+        <div class="count-card pgcet">
+          <p class="exam-name">PGCET Karnataka MBA</p>
+          <div><span class="big-num" id="cdPgcet">-</span><span class="unit">days (est.)</span></div>
+          <p class="window">Expected window: mid-May to mid-June 2027. Official date not yet released by KEA — this counts down to the earlier estimate.</p>
+        </div>
+        <div class="count-card cat">
+          <p class="exam-name">CAT 2027</p>
+          <div><span class="big-num" id="cdCat">-</span><span class="unit">days (est.)</span></div>
+          <p class="window">Traditionally the last Sunday of November. Estimate used: 28 Nov 2027. IIM notification usually arrives around Jul-Aug 2027.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="tracker-card">
+        <div class="tracker-head">
+          <h3>Your 100 days</h3>
+          <span class="tracker-stat"><b id="doneCount">0</b>/100 days logged - <b id="streakCount">0</b> day streak</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progFill"></div></div>
+        <div class="day-grid" id="dayGrid"></div>
+        <p class="motivate-line" id="motivateLine">Tap today's box once you have put in the work. Small reps, stacked for 100 days, beat one big burst.</p>
+      </div>
+    </section>
+
+    <section class="block">
+      <p class="eyebrow">The 15-block calendar</p>
+      <h2 class="section-title">Weekly focus, both exams side by side</h2>
+      <p class="lede">Full day-by-day tasks live inside the CAT and PGCET tabs. This is the fast overview.</p>
+      <table class="weekly-table">
+        <thead><tr><th>Days</th><th>CAT focus</th><th>PGCET focus</th></tr></thead>
+        <tbody id="overviewTable"></tbody>
+      </table>
+    </section>
+  </div>
+
+  <div class="view" id="view-cat">
+    <div class="subtabs">
+      <button class="subtab-btn active" data-sub="cat-syllabus">Syllabus</button>
+      <button class="subtab-btn" data-sub="cat-roadmap">100-Day Roadmap</button>
+      <button class="subtab-btn" data-sub="cat-practice">Practice Questions</button>
+    </div>
+
+    <div class="subview active" id="cat-syllabus">
+      <section class="block">
+        <p class="eyebrow">CAT - exam format</p>
+        <h2 class="section-title">3 sections, 66 questions, 120 minutes</h2>
+        <p class="lede">Conducted by the IIMs on rotation. MCQ + TITA (Type-In-The-Answer, no options). Sectional time limits apply - you cannot move between sections early.</p>
+        <div class="pattern-strip">
+          <div class="pattern-chip"><b>24 Qs / 40 min</b>VARC</div>
+          <div class="pattern-chip"><b>20 Qs / 40 min</b>DILR</div>
+          <div class="pattern-chip"><b>22 Qs / 40 min</b>Quantitative Ability</div>
+          <div class="pattern-chip"><b>+3 / 0 or -1</b>Marking (TITA: no negative)</div>
+        </div>
+        <div class="syll-grid" id="catSyllabus"></div>
+      </section>
+    </div>
+
+    <div class="subview" id="cat-roadmap">
+      <section class="block">
+        <p class="eyebrow">CAT - day by day</p>
+        <h2 class="section-title">100-day build, one task per day</h2>
+        <p class="lede">Each block names the concept and gives 7 daily tasks: theory, examples, two practice sets, previous-year questions, a mixed drill, then a timed topic test.</p>
+        <div id="catRoadmap"></div>
+      </section>
+    </div>
+
+    <div class="subview" id="cat-practice">
+      <section class="block">
+        <p class="eyebrow">CAT - practice bank</p>
+        <h2 class="section-title">59 questions - pick an option</h2>
+        <p class="lede">CAT-style questions across QA, VARC and DILR. Pick an answer to see whether it's right, and why - including why the other options are traps.</p>
+        <div class="quiz-toolbar">
+          <div class="quiz-toolbar-left">
+            <span class="quiz-score">Score: <b id="catScore">0 / 0</b></span>
+            <select class="filter-select" id="catFilter">
+              <option value="all">All sections</option>
+              <option value="QA">Quant (QA)</option>
+              <option value="VARC">Verbal (VARC)</option>
+              <option value="DILR">Data &amp; Logic (DILR)</option>
+            </select>
+          </div>
+          <button class="reset-btn" id="catReset">Reset attempts</button>
+        </div>
+        <div id="catQuiz"></div>
+      </section>
+    </div>
+  </div>
+
+  <div class="view" id="view-pgcet">
+    <div class="subtabs">
+      <button class="subtab-btn active" data-sub="pg-syllabus">Syllabus</button>
+      <button class="subtab-btn" data-sub="pg-roadmap">100-Day Roadmap</button>
+      <button class="subtab-btn" data-sub="pg-practice">Practice Questions</button>
+    </div>
+
+    <div class="subview active" id="pg-syllabus">
+      <section class="block">
+        <p class="eyebrow">PGCET Karnataka MBA - exam format</p>
+        <h2 class="section-title">5 sections, 100 questions, 120 minutes</h2>
+        <p class="lede">Conducted by the Karnataka Examinations Authority (KEA). Official syllabus: cetonline.karnataka.gov.in/kea/pgcet2027 (once live). No negative marking - attempt every question.</p>
+        <div class="pattern-strip">
+          <div class="pattern-chip"><b>20 Qs</b>Computer Awareness</div>
+          <div class="pattern-chip"><b>20 Qs</b>Analytical &amp; Logical Reasoning</div>
+          <div class="pattern-chip"><b>20 Qs</b>Quantitative Analysis</div>
+          <div class="pattern-chip"><b>20 Qs</b>English Language</div>
+          <div class="pattern-chip"><b>20 Qs</b>General Knowledge</div>
+        </div>
+        <div class="syll-grid" id="pgSyllabus"></div>
+      </section>
+    </div>
+
+    <div class="subview" id="pg-roadmap">
+      <section class="block">
+        <p class="eyebrow">PGCET - day by day</p>
+        <h2 class="section-title">100-day build, one task per day</h2>
+        <p class="lede">PGCET rewards speed and past-paper familiarity over depth. Once a block's concept is done, the daily tasks shift straight into previous-year questions on it.</p>
+        <div id="pgRoadmap"></div>
+      </section>
+    </div>
+
+    <div class="subview" id="pg-practice">
+      <section class="block">
+        <p class="eyebrow">PGCET - practice bank</p>
+        <h2 class="section-title">77 questions - pick an option</h2>
+        <p class="lede">Representative PGCET-style questions across all five sections.</p>
+        <div class="quiz-toolbar">
+          <div class="quiz-toolbar-left">
+            <span class="quiz-score">Score: <b id="pgScore">0 / 0</b></span>
+            <select class="filter-select" id="pgFilter">
+              <option value="all">All sections</option>
+              <option value="Quant">Quantitative</option>
+              <option value="Reasoning">Reasoning</option>
+              <option value="English">English</option>
+              <option value="Computer">Computer Awareness</option>
+              <option value="GK">General Knowledge</option>
+            </select>
+          </div>
+          <button class="reset-btn" id="pgReset">Reset attempts</button>
+        </div>
+        <div id="pgQuiz"></div>
+      </section>
+    </div>
+  </div>
+
+</main>
+
+<footer>Built for a 100-day sprint that starts today and does not need tomorrow's motivation to keep going - just today's box, checked.</footer>
+
+<script>
+(function(){
+
+/* ---------------- Service worker (enables real installability + offline use) ---------------- */
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js').catch(function(err){
+      console.warn('Service worker registration failed:', err);
+    });
+  });
+}
+
+/* ---------------- Install as app ---------------- */
+var isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+var deferredInstallPrompt = null;
+var installBtn = document.getElementById('installBtn');
+
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  if(!isStandalone && installBtn){ installBtn.style.display = 'inline-block'; }
+});
+
+if(installBtn){
+  installBtn.addEventListener('click', function(){
+    if(!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.finally(function(){
+      deferredInstallPrompt = null;
+      installBtn.style.display = 'none';
+    });
+  });
+}
+
+window.addEventListener('appinstalled', function(){
+  if(installBtn) installBtn.style.display = 'none';
+});
+
+/* iOS Safari has no beforeinstallprompt - show a one-time manual tip instead */
+(function(){
+  var ua = window.navigator.userAgent;
+  var isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+  var isSafari = /^((?!chrome|android|crios|fxios).)*safari/i.test(ua);
+  var tip = document.getElementById('iosInstallTip');
+  var dismissKey = 'mission100_ios_tip_dismissed';
+  if(isIOS && isSafari && !isStandalone && tip){
+    var dismissed = false;
+    try{ dismissed = localStorage.getItem(dismissKey) === '1'; }catch(e){}
+    if(!dismissed){
+      tip.style.display = 'block';
+      document.getElementById('iosTipDismiss').addEventListener('click', function(){
+        tip.style.display = 'none';
+        try{ localStorage.setItem(dismissKey, '1'); }catch(e){}
+      });
+    }
+  }
+})();
+
+document.querySelectorAll('.tab-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+    document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+    btn.classList.add('active');
+    document.getElementById('view-'+btn.dataset.view).classList.add('active');
+  });
+});
+document.querySelectorAll('.subtabs').forEach(function(group){
+  group.querySelectorAll('.subtab-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      group.querySelectorAll('.subtab-btn').forEach(function(b){b.classList.remove('active');});
+      var parent = group.parentElement;
+      parent.querySelectorAll('.subview').forEach(function(v){v.classList.remove('active');});
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.sub).classList.add('active');
+      if(btn.dataset.sub==='cat-practice') initCatQuiz();
+      if(btn.dataset.sub==='pg-practice') initPgQuiz();
+    });
+  });
+});
+
+function daysUntil(dateStr){
+  var target = new Date(dateStr+'T00:00:00');
+  var now = new Date();
+  return Math.ceil((target - now) / 86400000);
+}
+document.getElementById('cdPgcet').textContent = Math.max(daysUntil('2027-05-17'), 0);
+document.getElementById('cdCat').textContent = Math.max(daysUntil('2027-11-28'), 0);
+
+var grid = document.getElementById('dayGrid');
+var doneDays = {};
+try{ doneDays = JSON.parse(localStorage.getItem('mission100_days') || '{}'); }catch(e){ doneDays = {}; }
+function saveDays(){ try{ localStorage.setItem('mission100_days', JSON.stringify(doneDays)); }catch(e){} }
+
+var quotes = [
+  "Every rep counts. Nobody sees day 3, everyone sees day 100.",
+  "You do not need to feel ready. You need to show up.",
+  "Speed comes after accuracy. Do not rush the fundamentals.",
+  "A quarter of the way in - the base is being laid right now.",
+  "Consistency beats intensity. One box a day, every day.",
+  "Past-paper familiarity is worth more than one more textbook chapter.",
+  "Halfway. The version of you on day 1 would be proud of this.",
+  "Mocks do not lie. Trust the score, fix the gap, move on.",
+  "This is the stretch where toppers separate from the rest - quiet, unglamorous repetition.",
+  "Almost there. Protect your sleep more than your syllabus now.",
+  "Two exams, one disciplined person. Keep going."
+];
+
+function renderGrid(){
+  grid.innerHTML = '';
+  var doneCount = 0;
+  for(var i=1;i<=100;i++){
+    (function(i){
+      var cell = document.createElement('div');
+      cell.className = 'day-cell';
+      cell.textContent = i;
+      if(doneDays[i]){ cell.classList.add('done'); doneCount++; }
+      cell.addEventListener('click', function(){
+        if(doneDays[i]){ delete doneDays[i]; } else { doneDays[i] = true; }
+        saveDays();
+        renderGrid();
+      });
+      grid.appendChild(cell);
+    })(i);
+  }
+  document.getElementById('doneCount').textContent = doneCount;
+  document.getElementById('progFill').style.width = doneCount+'%';
+
+  var streak = 0, maxDone = 0;
+  for(var i=1;i<=100;i++){ if(doneDays[i]) maxDone = i; }
+  for(var i=maxDone;i>=1;i--){ if(doneDays[i]) streak++; else break; }
+  document.getElementById('streakCount').textContent = streak;
+  document.getElementById('dayPill').textContent = 'Day '+Math.min(maxDone+1,100)+' of 100';
+
+  var qi = Math.min(Math.floor(doneCount/9), quotes.length-1);
+  document.getElementById('motivateLine').textContent = doneCount===0 ? quotes[0] : quotes[qi];
+}
+renderGrid();
+
+/* ---------------- Roadmap: 15 blocks, each spanning start..end days ---------------- */
+var blocks = [
+  { start:1, end:7, label:"Foundation, week 1",
+    cat:{ topic:"Number Systems + daily Vocabulary habit", resource:"Arun Sharma's Quantitative Aptitude (Number System chapter); Word Power Made Easy - Norman Lewis, 1 chapter/week; 1 editorial/day (The Hindu / Livemint)." },
+    pg:{ topic:"Computer Awareness basics + English grammar basics", resource:"Any Class 10-12 Computer Science basics text; Wren & Martin for grammar." } },
+
+  { start:8, end:14, label:"Arithmetic core",
+    cat:{ topic:"Percentages, Profit-Loss-Discount", resource:"Arun Sharma, Percentages & P/L chapters; drill 30 Qs/day for speed." },
+    pg:{ topic:"Percentages, Profit & Loss, Averages", resource:"R.S. Aggarwal - Quantitative Aptitude, relevant chapters + past PGCET papers on the same topics." } },
+
+  { start:15, end:21, label:"Averages & mixtures",
+    cat:{ topic:"Averages, Ratio-Proportion, Mixtures & Alligations", resource:"Arun Sharma, respective chapters; 1 mixed test on weak spots from week 1." },
+    pg:{ topic:"Series, Coding-Decoding, Blood Relations", resource:"R.S. Aggarwal - Verbal & Non-Verbal Reasoning." } },
+
+  { start:22, end:28, label:"Motion & work",
+    cat:{ topic:"Time-Speed-Distance and Time & Work", resource:"Arun Sharma TSD/Work chapters; start 1 short RC passage/day for reading stamina." },
+    pg:{ topic:"Vocabulary (Synonyms/Antonyms), One-word Substitution", resource:"Norman Lewis vocabulary lists; Lucent's GK for one-word substitution sets." } },
+
+  { start:29, end:35, label:"Interest & algebra intro",
+    cat:{ topic:"Simple & Compound Interest; linear equations, basic functions", resource:"Arun Sharma Algebra chapters 1-2." },
+    pg:{ topic:"Ratio & Proportion, Time & Work, Time-Speed-Distance", resource:"Cross-use CAT week-4 notes at PGCET (easier) difficulty." } },
+
+  { start:36, end:42, label:"Algebra deep dive",
+    cat:{ topic:"Quadratic equations, inequalities, logarithms, functions", resource:"Arun Sharma Algebra chapters 3-5; ramp Reading Comprehension to 2 passages/day." },
+    pg:{ topic:"Syllogisms, Seating Arrangement, basic Puzzles", resource:"R.S. Aggarwal Reasoning, Syllogism & Arrangement chapters." } },
+
+  { start:43, end:49, label:"Geometry & jumbles",
+    cat:{ topic:"Geometry - lines, triangles, circles, coordinate basics", resource:"Arun Sharma Geometry chapters; Para-jumble sets from any CAT prep site." },
+    pg:{ topic:"Static GK - Indian polity, geography, history basics", resource:"Lucent's General Knowledge - 1 section/day, revise same evening." } },
+
+  { start:50, end:56, label:"Mensuration & DILR intro",
+    cat:{ topic:"Mensuration (2D & 3D); DILR intro - tables, caselets", resource:"Arun Sharma Mensuration; Nishit Sinha's LRDI book, chapters 1-2." },
+    pg:{ topic:"MS Office basics, Internet fundamentals, tech terms", resource:"Basic computer awareness guide; PGCET previous papers, Computer Awareness section." } },
+
+  { start:57, end:63, label:"Counting & current affairs",
+    cat:{ topic:"Permutation-Combination and Probability", resource:"Arun Sharma P&C/Probability chapters." },
+    pg:{ topic:"General Knowledge - Current Affairs tracker starts", resource:"A monthly current-affairs digest PDF; revise weekly." } },
+
+  { start:64, end:70, label:"DILR build-up",
+    cat:{ topic:"DILR - Puzzles, Seating Arrangement, Venn Diagrams", resource:"Nishit Sinha's LRDI book, chapters 3-5." },
+    pg:{ topic:"Data Interpretation, Statistical Analysis", resource:"PGCET previous papers, DI section; R.S. Aggarwal DI chapter." } },
+
+  { start:71, end:77, label:"DILR + reading + reasoning",
+    cat:{ topic:"DILR - Games & Tournaments, Routes & Networks; Critical Reasoning", resource:"Nishit Sinha LRDI, remaining chapters; any CAT critical-reasoning set." },
+    pg:{ topic:"Direction Sense, non-verbal reasoning, Reading Comprehension", resource:"R.S. Aggarwal non-verbal chapters; short RC passages at PGCET level." } },
+
+  { start:78, end:84, label:"Full syllabus revision",
+    cat:{ topic:"Full syllabus revision - build a formula sheet; sectional tests begin", resource:"Your own formula/shortcut notebook from days 1-77; any CAT sectional test series." },
+    pg:{ topic:"Full previous-year paper practice", resource:"KEA's released previous-year PGCET papers (cetonline.karnataka.gov.in)." } },
+
+  { start:85, end:91, label:"Sectional mocks",
+    cat:{ topic:"Sectional mocks under strict 40-min limits; error log", resource:"Any CAT mock series (T.I.M.E./IMS/Career Launcher); your error log." },
+    pg:{ topic:"Full-length timed mocks; final GK revision pass", resource:"PGCET mock series (T.I.M.E./PW); your current-affairs tracker." } },
+
+  { start:92, end:98, label:"Full-length mocks",
+    cat:{ topic:"Full-length CAT mocks + weak-area drilling", resource:"CAT mock series; revisit Arun Sharma/Nishit Sinha chapters flagged weak." },
+    pg:{ topic:"Full-length PGCET mocks + redo previous 5 years' papers", resource:"Previous 5 years' PGCET papers, second pass, timed." } },
+
+  { start:99, end:100, label:"Taper & reset",
+    cat:{ topic:"No new topics - light recall only", resource:"Your own notes only." },
+    pg:{ topic:"No new topics - light recall only", resource:"Your own notes only." } }
+];
+
+var templateA = [
+  "Learn the core theory & formulas for the block topic.",
+  "Work through solved examples and shortcut methods.",
+  "Practice Set 1 - 25 easy-to-medium questions on the topic.",
+  "Practice Set 2 - 25 medium-to-hard questions; review every mistake.",
+  "Previous-year questions on the topic, done under a timer.",
+  "Mixed drill - blend today's topic with the last 1-2 topics.",
+  "Timed topic test (30 min) + write down every formula or concept gap."
+];
+var templateB = [
+  "Rebuild your formula/concept sheet for the full syllabus so far.",
+  "Full previous-year paper or sectional test, fully timed.",
+  "Review every wrong answer - write the *why* into your error log.",
+  "Drill the weakest topic from today's review, 30 questions.",
+  "Second full previous-year paper or sectional test, timed.",
+  "Review + drill the second-weakest topic.",
+  "Half-day rest; light revision only, no new mocks."
+];
+var taperText = ["Skim your formula/GK sheet once. Review the exam-day checklist. Sleep on time.",
+                  "No new material. Light 15-20 min recall quiz only. Lay out admit card, ID and stationery. Sleep on time."];
+
+function dailyTasksFor(block, examKey, blockIndex){
+  var range = block.end - block.start + 1;
+  var out = [];
+  if(blockIndex === blocks.length-1){
+    for(var d=block.start; d<=block.end; d++){
+      out.push({ day:d, task: taperText[d-block.start] || taperText[taperText.length-1] });
+    }
+    return out;
+  }
+  var template = blockIndex >= 11 ? templateB : templateA;
+  for(var d=block.start, i=0; d<=block.end; d++, i++){
+    var t = template[i % template.length];
+    if(blockIndex < 11){
+      t = t.replace('the block topic', block[examKey].topic).replace('the topic', block[examKey].topic.split(',')[0].split(' - ')[0].split(' (')[0]);
+    }
+    out.push({ day:d, task:t });
+  }
+  return out;
+}
+
+function renderRoadmap(containerId, examKey){
+  var el = document.getElementById(containerId);
+  var html = '';
+  for(var idx=0; idx<blocks.length; idx++){
+    var b = blocks[idx];
+    var days = dailyTasksFor(b, examKey, idx);
+    var rangeLabel = "Day "+b.start+(b.end>b.start ? "-"+b.end : "");
+    var rows = days.map(function(dObj){
+      return '<tr><td>Day '+dObj.day+'</td><td>'+dObj.task+'</td></tr>';
+    }).join('');
+    html += '<div class="phase">'+
+      '<div class="phase-head"><div class="range">'+rangeLabel+'<em>'+b.label+'</em></div><div class="phase-num">'+(idx+1)+'</div></div>'+
+      '<p class="phase-focus"><b>Topic: </b>'+b[examKey].topic+'</p>'+
+      '<table class="day-breakdown">'+rows+'</table>'+
+      '<p class="phase-resource"><b style="color:var(--muted)">Source: </b>'+b[examKey].resource+'</p>'+
+    '</div>';
+  }
+  el.innerHTML = html;
+}
+renderRoadmap('catRoadmap','cat');
+renderRoadmap('pgRoadmap','pg');
+
+document.getElementById('overviewTable').innerHTML = blocks.map(function(b){
+  var rangeLabel = "Day "+b.start+(b.end>b.start ? "-"+b.end : "");
+  return '<tr><td class="day-range">'+rangeLabel+'</td><td>'+b.cat.topic+'</td><td>'+b.pg.topic+'</td></tr>';
+}).join('');
+
+/* ---------------- Syllabus data ---------------- */
+var catSyllabus = [
+  { name:"Verbal Ability & Reading Comprehension (VARC)", color:"var(--teal)",
+    topics:["Reading Comprehension (5-6 passages)","Para-jumbles","Para-summary","Odd sentence out","Critical reasoning","Vocabulary-in-context"] },
+  { name:"Data Interpretation & Logical Reasoning (DILR)", color:"var(--amber)",
+    topics:["Tables & caselets","Bar/line/pie graphs","Seating arrangement","Puzzles","Venn diagrams","Games & tournaments","Routes & networks","Clocks & calendars"] },
+  { name:"Quantitative Ability (QA)", color:"var(--good)",
+    topics:["Number systems","Percentages, Profit-Loss, SI-CI","Averages, Ratio, Mixtures","Time-Speed-Distance, Time-Work","Algebra","Geometry & Mensuration","Permutation-Combination, Probability"] }
+];
+document.getElementById('catSyllabus').innerHTML = catSyllabus.map(function(s){
+  return '<div class="syll-card"><h4><span class="dot" style="background:'+s.color+'"></span>'+s.name+'</h4>'+
+  '<div class="syll-topics">'+s.topics.map(function(t){return '<span>'+t+'</span>';}).join('')+'</div></div>';
+}).join('');
+
+var pgSyllabus = [
+  { name:"Computer Awareness", color:"var(--amber)", topics:["Computer fundamentals & memory","Binary/number systems","MS Office","Internet basics"] },
+  { name:"Analytical Ability & Logical Reasoning", color:"var(--teal)", topics:["Series, coding-decoding","Blood relations","Syllogisms","Seating arrangement, puzzles","Direction sense"] },
+  { name:"Quantitative Analysis", color:"var(--good)", topics:["Arithmetic (%, P&L, Averages)","Ratio, Time-Work, TSD","Data interpretation","Statistical analysis"] },
+  { name:"English Language", color:"#C98BD1", topics:["Grammar & sentence correction","Synonyms / antonyms","One-word substitution","Reading comprehension"] },
+  { name:"General Knowledge", color:"#E3705C", topics:["Static GK - polity, geography, history","Current affairs (last 6 months)","Business & economy news"] }
+];
+document.getElementById('pgSyllabus').innerHTML = pgSyllabus.map(function(s){
+  return '<div class="syll-card"><h4><span class="dot" style="background:'+s.color+'"></span>'+s.name+'</h4>'+
+  '<div class="syll-topics">'+s.topics.map(function(t){return '<span>'+t+'</span>';}).join('')+'</div></div>';
+}).join('');
+
+/* ---------------- Quiz data ---------------- */
+var catQuestions = [
+  { section:"QA", tag:"QA - Percentages", q:"A student who scores 20% marks in an exam fails by 30 marks. Another student who scores 32% marks gets 42 more than the passing marks. What are the maximum marks?",
+    options:["500","550","600","650"], correct:2,
+    why:"Let max marks be M and pass marks be P. 0.20M + 30 = P and 0.32M - 42 = P. Equating: 0.20M + 30 = 0.32M - 42, so 72 = 0.12M, giving M = 600.",
+    trap:"550 and 650 come from arithmetic slips while equating the two expressions; 500 assumes a round passing percentage instead of solving for it." },
+
+  { section:"QA", tag:"QA - Number Systems", q:"What is the remainder when 7 raised to the power 100 is divided by 5?",
+    options:["1","2","3","4"], correct:0,
+    why:"7 mod 5 = 2, so we need 2^100 mod 5. Since 2^4 = 16 is congruent to 1 mod 5, 2^100 = (2^4)^25 is congruent to 1^25 = 1 mod 5.",
+    trap:"2, 3, 4 come from stopping the cycle-of-4 pattern too early or misreading the exponent." },
+
+  { section:"QA", tag:"QA - Time, Speed, Distance", q:"A 150 m train crosses a 250 m platform in 20 seconds. What is its speed in km/hr?",
+    options:["60","72","80","90"], correct:1,
+    why:"Distance covered equals train length plus platform length: 150 + 250 = 400 m in 20 s, so speed = 20 m/s = 20 times 18/5 = 72 km/hr.",
+    trap:"60 forgets to add the platform length; 80 and 90 come from a wrong m/s to km/hr conversion factor." },
+
+  { section:"QA", tag:"QA - Algebra", q:"If x + 1/x = 3, find the value of x cubed + 1/x cubed.",
+    options:["15","18","21","24"], correct:1,
+    why:"x cubed + 1/x cubed = (x + 1/x) cubed - 3(x + 1/x) = 3 cubed - 3(3) = 27 - 9 = 18.",
+    trap:"The other options come from forgetting the -3(x+1/x) correction term or mis-cubing the sum." },
+
+  { section:"QA", tag:"QA - Profit & Loss", q:"A shopkeeper marks goods 40% above cost price and then gives a 15% discount. What is his profit percentage?",
+    options:["15%","19%","21%","25%"], correct:1,
+    why:"Let CP = 100. Marked price = 140. Selling price after 15% discount = 140 times 0.85 = 119, so profit = 19%.",
+    trap:"25% is just the markup with no discount applied; 15% confuses the discount rate with the profit rate; 21% comes from simply subtracting the two percentages instead of compounding them." },
+
+  { section:"QA", tag:"QA - Averages", q:"The average of 5 consecutive odd numbers is 61. Find the largest of the five numbers.",
+    options:["63","65","67","69"], correct:1,
+    why:"For 5 consecutive odd numbers, the average equals the middle (3rd) number, so the middle number is 61. The numbers are 57, 59, 61, 63, 65 - the largest is 65.",
+    trap:"63 mistakes the average for the 4th number rather than the middle one; 67 and 69 overshoot by assuming the average is one of the smaller numbers." },
+
+  { section:"QA", tag:"QA - Ratio", q:"Rs. 2340 is divided among A, B and C in the ratio 3:4:5. Find B's share.",
+    options:["Rs. 585","Rs. 780","Rs. 975","Rs. 650"], correct:1,
+    why:"Total parts = 3+4+5 = 12. B's share = (4/12) times 2340 = Rs. 780.",
+    trap:"585 and 975 swap which fraction belongs to which person; 650 comes from dividing by the wrong total." },
+
+  { section:"QA", tag:"QA - Time & Work", q:"A can complete a work in 12 days and B in 18 days. Working together, in how many days will they finish it?",
+    options:["7.2 days","8 days","7.5 days","6.5 days"], correct:0,
+    why:"Combined rate = 1/12 + 1/18 = 3/36 + 2/36 = 5/36 of the work per day. Time taken = 36/5 = 7.2 days.",
+    trap:"8 and 7.5 come from simple averaging of the two individual times instead of adding rates." },
+
+  { section:"QA", tag:"QA - Compound Interest", q:"Find the compound interest on Rs. 10,000 for 2 years at 10% per annum, compounded annually.",
+    options:["Rs. 2000","Rs. 2100","Rs. 2200","Rs. 2400"], correct:1,
+    why:"Amount = 10000 times (1.1)^2 = 10000 times 1.21 = Rs. 12,100. Compound interest = 12100 - 10000 = Rs. 2100.",
+    trap:"2000 is simple interest for 2 years at 10%, not compound interest, which is always slightly higher." },
+
+  { section:"QA", tag:"QA - Mensuration", q:"Find the volume of a cylinder with radius 7 cm and height 10 cm (use pi = 22/7).",
+    options:["1540 cm cubed","1240 cm cubed","1440 cm cubed","1680 cm cubed"], correct:0,
+    why:"Volume = pi times r squared times h = (22/7) times 49 times 10 = 22 times 7 times 10 = 1540 cm cubed.",
+    trap:"The other values come from arithmetic slips in multiplying 22/7 by 49 times 10." },
+
+  { section:"QA", tag:"QA - Permutations", q:"In how many ways can the letters of the word LEADER be arranged?",
+    options:["360","720","180","240"], correct:0,
+    why:"LEADER has 6 letters with the letter E repeated twice. Total arrangements = 6! / 2! = 720/2 = 360.",
+    trap:"720 forgets to divide by the repeated letter's factorial; 180 and 240 come from dividing by the wrong factor." },
+
+  { section:"QA", tag:"QA - Probability", q:"A bag contains 5 red and 3 blue balls. Two balls are drawn at random. Find the probability that both are red.",
+    options:["5/14","5/28","3/14","15/28"], correct:0,
+    why:"Ways to choose 2 red from 5 = C(5,2) = 10. Ways to choose any 2 from 8 = C(8,2) = 28. Probability = 10/28 = 5/14.",
+    trap:"5/28 forgets to simplify the fraction fully; 3/14 and 15/28 come from using the wrong combination counts." },
+
+  { section:"QA", tag:"QA - Simple Interest logic", q:"A sum of money becomes 3 times itself in 10 years at simple interest. What is the rate of interest per annum?",
+    options:["15%","20%","25%","30%"], correct:1,
+    why:"Becoming 3 times means the interest earned equals 2 times the principal over 10 years. Using SI = P times R times T / 100: 2P = P times R times 10/100, so R = 20%.",
+    trap:"15% and 25% come from treating '3 times' as '2 times' or '4 times' the interest amount instead of 2 times the principal." },
+
+  { section:"VARC", tag:"VARC - Vocabulary", q:"Choose the word most nearly OPPOSITE in meaning to PARSIMONIOUS.",
+    options:["Frugal","Stingy","Lavish","Prudent"], correct:2,
+    why:"Parsimonious means excessively unwilling to spend money, i.e. stingy. Its opposite is 'lavish' - spending freely.",
+    trap:"Frugal, Stingy and Prudent are all near-synonyms of parsimonious, not opposites - a classic distractor pattern." },
+
+  { section:"VARC", tag:"VARC - Analogy", q:"Select the pair that best expresses a relationship similar to: DOCTOR : HOSPITAL",
+    options:["Teacher : School","Book : Library","Soldier : Army","Chef : Kitchen"], correct:0,
+    why:"A doctor is a professional whose primary workplace is a hospital. Similarly, a teacher is a professional whose primary workplace is a school - the same person-to-workplace relationship.",
+    trap:"Book:Library is object-to-storage-place, not professional-to-workplace; Soldier:Army and Chef:Kitchen are subtly different relationships (person:organisation, person:room)." },
+
+  { section:"VARC", tag:"VARC - Critical Reasoning", q:"\"Crime rates fell in City X after more streetlights were installed, so streetlights reduce crime.\" Which statement, if true, would most WEAKEN this argument?",
+    options:["City X also increased police patrols during the same period","Streetlights were installed only in wealthy neighbourhoods","City X now has more streetlights than City Y","Crime rates in City X were higher before the streetlights were installed"], correct:0,
+    why:"If police patrols also increased at the same time, the fall in crime could be due to patrolling rather than lighting - this introduces a credible alternative cause and weakens the causal claim.",
+    trap:"The other options either restate the premise or do not challenge the causal link between lighting and crime." },
+
+  { section:"VARC", tag:"VARC - Para-jumble", q:"Which sentence should come FIRST in a coherent paragraph built from these four? (A) This shift has forced retailers to rethink their supply chains. (B) Over the past decade, online shopping has transformed consumer behaviour. (C) As a result, same-day delivery has become a competitive necessity rather than a luxury. (D) Traditional stores have had to adapt or shut down.",
+    options:["A","B","C","D"], correct:1,
+    why:"Sentence B introduces the general trend (rise of online shopping) that the other three sentences describe the consequences of - it must come first, with the natural order being B, D, A, C.",
+    trap:"A, C and D each describe an effect or consequence and depend on B's topic being introduced first - none of them can open the paragraph." },
+
+  { section:"VARC", tag:"VARC - Sentence completion", q:"Choose the option that best completes the sentence: 'His argument was so ___ that even his critics found it hard to refute.'",
+    options:["Cogent","Frivolous","Vague","Redundant"], correct:0,
+    why:"'Cogent' means clear, logical and convincing - exactly the quality that would make an argument hard to refute, even for critics.",
+    trap:"Frivolous, Vague and Redundant all describe weak arguments, which contradicts 'hard to refute'." },
+
+  { section:"VARC", tag:"VARC - Odd sentence out", q:"Which sentence does NOT fit the flow of this paragraph? (1) Renewable energy sources like solar and wind are becoming cheaper each year. (2) This has led to a rapid increase in their adoption worldwide. (3) Fossil fuel prices have remained relatively stable over the last decade. (4) Many countries now aim to be carbon neutral by 2050.",
+    options:["Sentence 1","Sentence 2","Sentence 3","Sentence 4"], correct:2,
+    why:"The paragraph's thread is falling renewable costs leading to adoption and climate goals. Sentence 3, about stable fossil fuel prices, breaks that thread and does not connect to the sentences before or after it.",
+    trap:"Sentences 1, 2 and 4 all build on the same cause-and-effect chain about renewable energy adoption." },
+
+  { section:"VARC", tag:"VARC - Analogy", q:"Select the pair with the same relationship as: AUTHOR : BOOK",
+    options:["Sculptor : Statue","Reader : Library","Painter : Brush","Editor : Publisher"], correct:0,
+    why:"An author creates a book. Similarly, a sculptor creates a statue - both are creator-to-creation pairs.",
+    trap:"Reader:Library is person-to-place, Painter:Brush is person-to-tool, and Editor:Publisher is person-to-organisation - none match the creator-to-creation pattern." },
+
+  { section:"VARC", tag:"VARC - Reading inference", q:"\"Urban green spaces have been shown to reduce stress and improve air quality, yet many cities continue to prioritize infrastructure development over parkland expansion, citing budget constraints.\" Based on this, why do cities often avoid expanding green spaces despite the known benefits?",
+    options:["Green spaces are shown to increase stress","Budget constraints","A lack of scientific evidence for the benefits","Public opposition to parks"], correct:1,
+    why:"The passage explicitly states cities cite 'budget constraints' as the reason for prioritizing infrastructure over parkland, despite acknowledging the benefits of green spaces.",
+    trap:"The passage never claims green spaces increase stress, a lack of evidence, or public opposition - those are not mentioned at all." },
+
+  { section:"VARC", tag:"VARC - Vocabulary", q:"Choose the word most nearly OPPOSITE in meaning to EPHEMERAL.",
+    options:["Fleeting","Permanent","Transient","Momentary"], correct:1,
+    why:"'Ephemeral' means lasting a very short time. Its opposite is 'permanent' - lasting indefinitely.",
+    trap:"Fleeting, Transient and Momentary are all near-synonyms of ephemeral, not opposites." },
+
+  { section:"DILR", tag:"DILR - Coding", q:"In a certain code, CAT is written as 312, DOG as 456. How would COD be written in the same code?",
+    options:["354","345","453","435"], correct:0,
+    why:"The mapping is C=3, A=1, T=2 (from CAT) and D=4, O=5, G=6 (from DOG). For COD: C=3, O=5, D=4, giving 354.",
+    trap:"The other options place the digits in a slightly wrong order - always map letter by letter, not by guessing the pattern." },
+
+  { section:"DILR", tag:"DILR - Clocks", q:"How many times do the hour and minute hands of a clock overlap in a 24-hour day?",
+    options:["20","22","23","24"], correct:1,
+    why:"The hands overlap 11 times every 12 hours, not 12, because the last overlap of one 12-hour cycle coincides with the first of the next. Over 24 hours, that gives 22 overlaps.",
+    trap:"24 assumes one overlap per hour, which is not how clock hands actually behave." },
+
+  { section:"DILR", tag:"DILR - Seating Arrangement", q:"Four friends A, B, C, D sit in a row. B is immediately to the right of A. C is at one of the extreme ends. D is second from the left. Who sits at the left extreme end?",
+    options:["A","B","C","D"], correct:2,
+    why:"D is second from the left, so D is in position 2. Testing C at position 1: the remaining positions 3 and 4 must hold A and B with B immediately right of A, so A=3, B=4. This satisfies all conditions, placing C at the left extreme.",
+    trap:"Testing C at the right extreme (position 4) leaves positions 1 and 3 for A and B, which are not adjacent, so B cannot be immediately right of A - that arrangement is invalid." },
+
+  { section:"DILR", tag:"DILR - Venn Diagram", q:"In a class of 60 students, 35 play cricket, 30 play football, and 10 play neither sport. How many play both?",
+    options:["10","15","20","25"], correct:1,
+    why:"Students playing at least one sport = 60 - 10 = 50. Using the union formula: Cricket + Football - Both = 50, so 35 + 30 - Both = 50, giving Both = 15.",
+    trap:"20 and 25 come from arithmetic slips in the union formula; 10 wrongly assumes 'both' equals 'neither'." },
+
+  { section:"DILR", tag:"DILR - Data Interpretation", q:"Monthly sales (units) were: Jan 120, Feb 150, Mar 90, Apr 180. What is the percentage increase in sales from March to April?",
+    options:["50%","75%","100%","120%"], correct:2,
+    why:"Increase = 180 - 90 = 90. Percentage increase = (90/90) times 100 = 100%.",
+    trap:"50% and 75% come from dividing the increase by the wrong base value (April's figure instead of March's)." },
+
+  { section:"DILR", tag:"DILR - Direction Sense", q:"Rahul walks 5 km North, turns right and walks 3 km, then turns right again and walks 5 km. How far is he from his starting point?",
+    options:["3 km","5 km","8 km","13 km"], correct:0,
+    why:"North 5 km, then right turn = East 3 km, then right turn again = South 5 km. The second 5 km South exactly cancels the first 5 km North, leaving a net displacement of 3 km East.",
+    trap:"8 km and 13 km come from adding up the distances walked instead of finding the net straight-line displacement." },
+
+  { section:"DILR", tag:"DILR - Syllogism", q:"Statements: All pens are pencils. Some pencils are erasers. Conclusions: I. Some pens are erasers. II. Some erasers are pens. Which conclusion(s) logically follow?",
+    options:["Only conclusion I","Only conclusion II","Both I and II","Neither I nor II"], correct:3,
+    why:"'All pens are pencils' and 'some pencils are erasers' do not guarantee that the specific pencils which are erasers include any pens - the two groups of pencils described may not overlap. Neither conclusion is guaranteed.",
+    trap:"It feels intuitive that pens and erasers must overlap, but syllogism rules require the conclusion to hold in every possible case, and a case exists where they do not overlap." },
+
+  { section:"DILR", tag:"DILR - Ranking", q:"In a race of 5 runners, P finishes before Q, Q finishes before R, and R finishes before S. S does not finish last. Who finishes first?",
+    options:["P","Q","R","S"], correct:0,
+    why:"The given order is P before Q before R before S. Since P is ahead of everyone else mentioned in this chain, P finishes first regardless of where the unnamed 5th runner finishes.",
+    trap:"Q, R and S are all shown to finish after at least one other named runner, so none of them can be first." },
+
+  { section:"DILR", tag:"DILR - Caselet", q:"Five boxes weigh 12 kg, 18 kg, 9 kg, 15 kg and 21 kg. If the heaviest and lightest boxes are removed, what is the average weight of the remaining boxes?",
+    options:["14 kg","15 kg","16 kg","17 kg"], correct:1,
+    why:"Removing the heaviest (21 kg) and lightest (9 kg) leaves 12, 18, 15. Their sum is 45, and the average is 45/3 = 15 kg.",
+    trap:"14, 16 and 17 come from including one of the removed boxes by mistake in the average." },
+
+  { section:"DILR", tag:"DILR - Calendar", q:"If January 1, 2027 is a Friday, what day of the week is January 15, 2027?",
+    options:["Friday","Saturday","Thursday","Sunday"], correct:0,
+    why:"January 15 is 14 days after January 1. Since 14 is exactly 2 full weeks, the day of the week repeats: Friday.",
+    trap:"Saturday and Thursday come from off-by-one errors in counting the day difference." },
+
+  { section:"QA", tag:"QA - LCM & HCF", q:"The LCM of two numbers is 180 and their HCF is 6. If one number is 36, find the other.",
+    options:["24","30","36","45"], correct:1,
+    why:"For any two numbers, LCM times HCF equals the product of the numbers: 180 times 6 = 1080. The other number = 1080/36 = 30.",
+    trap:"36 mistakenly repeats the given number instead of solving for the unknown one; 24 and 45 come from dividing by the wrong factor." },
+
+  { section:"QA", tag:"QA - Progressions", q:"Find the sum of the first 20 terms of an AP whose first term is 3 and common difference is 4.",
+    options:["780","800","820","840"], correct:2,
+    why:"Sum of n terms = (n/2)[2a + (n-1)d] = (20/2)[6 + 19 times 4] = 10 times [6+76] = 10 times 82 = 820.",
+    trap:"780 and 800 come from using the wrong number of terms in (n-1); 840 comes from a slip in the multiplication." },
+
+  { section:"QA", tag:"QA - Logarithms", q:"If log base 2 of x = 5, find x.",
+    options:["16","25","32","64"], correct:2,
+    why:"log base 2 of x = 5 means 2 raised to the power 5 = x, so x = 32.",
+    trap:"25 confuses the log base with the exponent itself; 16 and 64 are 2^4 and 2^6, off by one power." },
+
+  { section:"QA", tag:"QA - Geometry - Circles", q:"The area of a circle is 154 sq cm. Find its circumference. (use pi = 22/7)",
+    options:["22 cm","44 cm","66 cm","88 cm"], correct:1,
+    why:"Area = pi r squared = 154, so r squared = 154 times 7/22 = 49, giving r = 7. Circumference = 2 pi r = 2 times (22/7) times 7 = 44 cm.",
+    trap:"22 cm is just the radius times pi without the factor of 2; 66 and 88 come from using the wrong radius." },
+
+  { section:"QA", tag:"QA - Pipes & Cisterns", q:"Pipe A can fill a tank in 6 hours; pipe B can empty it in 9 hours. If both are opened together, how long will the tank take to fill?",
+    options:["12 hours","15 hours","18 hours","24 hours"], correct:2,
+    why:"Combined rate = 1/6 - 1/9 = 3/18 - 2/18 = 1/18 of the tank per hour, since B works against A. Time to fill = 18 hours.",
+    trap:"12 and 15 come from adding the rates instead of subtracting the emptying pipe's rate." },
+
+  { section:"QA", tag:"QA - Boats & Streams", q:"A boat's speed in still water is 10 km/hr and the stream's speed is 2 km/hr. Find the time taken to cover 24 km downstream.",
+    options:["1.5 hours","2 hours","2.5 hours","3 hours"], correct:1,
+    why:"Downstream speed = boat speed + stream speed = 10 + 2 = 12 km/hr. Time = 24/12 = 2 hours.",
+    trap:"3 hours uses the upstream speed (10-2=8) by mistake; other options come from arithmetic slips." },
+
+  { section:"QA", tag:"QA - Partnership", q:"A and B invest Rs. 4000 and Rs. 6000 respectively in a business for one year. If the total profit is Rs. 5000, find A's share.",
+    options:["Rs. 2000","Rs. 2500","Rs. 3000","Rs. 1800"], correct:0,
+    why:"Investment ratio = 4000:6000 = 2:3. A's share = (2/5) times 5000 = Rs. 2000.",
+    trap:"2500 wrongly splits the profit equally; the other options misapply the ratio." },
+
+  { section:"QA", tag:"QA - Indices", q:"Simplify: (2 raised to 5 times 2 raised to 3) divided by 2 raised to 4.",
+    options:["8","16","32","64"], correct:1,
+    why:"Using exponent rules: 2^(5+3-4) = 2^4 = 16.",
+    trap:"32 forgets to subtract the denominator's exponent; 8 and 64 come from adding or subtracting the wrong terms." },
+
+  { section:"QA", tag:"QA - Mixtures - Alligation", q:"In what ratio must a shopkeeper mix tea worth Rs. 60/kg and Rs. 75/kg to get a mixture worth Rs. 65/kg?",
+    options:["1:2","2:1","3:2","1:1"], correct:1,
+    why:"By alligation: (75-65):(65-60) = 10:5 = 2:1 - the ratio of the cheaper to dearer tea needed.",
+    trap:"1:2 inverts the alligation ratio, a very common slip; 3:2 and 1:1 come from arithmetic errors." },
+
+  { section:"QA", tag:"QA - Set Theory", q:"Out of 100 students, 60 play cricket, 50 play football and 20 play neither sport. How many play both cricket and football?",
+    options:["20","25","30","35"], correct:2,
+    why:"Students playing at least one sport = 100 - 20 = 80. Using the union formula: 60 + 50 - Both = 80, so Both = 30.",
+    trap:"20 confuses 'neither' with 'both'; 25 and 35 come from arithmetic slips in the union formula." },
+
+  { section:"QA", tag:"QA - Number Systems", q:"What is the smallest number that must be added to 1000 to make it exactly divisible by 45?",
+    options:["35","40","45","30"], correct:0,
+    why:"1000 divided by 45 gives 22 with a remainder of 10 (22 times 45 = 990). The next multiple of 45 is 23 times 45 = 1035, and 1035 - 1000 = 35.",
+    trap:"45 wrongly assumes the divisor itself must be added; 40 and 30 come from miscalculating the remainder." },
+
+  { section:"QA", tag:"QA - Successive Percentage Change", q:"The price of an item is increased by 20% and then decreased by 20%. What is the net percentage change?",
+    options:["No change","-4%","+4%","-2%"], correct:1,
+    why:"Using the net-change formula x + y + xy/100 with x=20, y=-20: 20 - 20 + (20 times -20)/100 = -4%.",
+    trap:"'No change' is the most common intuitive but wrong answer - equal percentage up and down never cancel out exactly." },
+
+  { section:"QA", tag:"QA - Geometry - Triangles", q:"The sides of a triangle are 5 cm, 12 cm and 13 cm. What is its area?",
+    options:["24 cm sq","30 cm sq","36 cm sq","60 cm sq"], correct:1,
+    why:"5-12-13 is a Pythagorean triple, so the triangle is right-angled with legs 5 and 12. Area = (1/2) times 5 times 12 = 30 cm sq.",
+    trap:"60 forgets to halve the product of the two legs; the others come from using the wrong pair of sides." },
+
+  { section:"VARC", tag:"VARC - Vocabulary", q:"Choose the word most nearly SIMILAR in meaning to GARRULOUS.",
+    options:["Taciturn","Talkative","Timid","Tactful"], correct:1,
+    why:"'Garrulous' means excessively talkative, especially about trivial matters - closest in meaning to 'talkative'.",
+    trap:"'Taciturn' means the opposite - reserved and saying little - making it a tempting but wrong pick." },
+
+  { section:"VARC", tag:"VARC - Idiom", q:"Choose the option that best explains the idiom: 'To bite the bullet'",
+    options:["To face a difficult situation with courage","To break a promise","To eat quickly","To avoid responsibility"], correct:0,
+    why:"'To bite the bullet' means to endure a painful or difficult situation that is unavoidable, showing courage in doing so.",
+    trap:"The other options describe unrelated actions that do not match the idiom's actual figurative meaning." },
+
+  { section:"VARC", tag:"VARC - Critical Reasoning", q:"\"The new policy will reduce traffic congestion because it encourages carpooling.\" Which assumption underlies this argument?",
+    options:["Carpooling reduces the number of vehicles on the road","All commuters own cars","Public transport will be shut down","Traffic congestion is caused only by cars"], correct:0,
+    why:"The argument's logic only works if carpooling actually results in fewer vehicles being driven - that is the unstated assumption linking the policy to less congestion.",
+    trap:"The other options are much stronger, unstated claims that the argument does not need in order to hold." },
+
+  { section:"VARC", tag:"VARC - Para-completion", q:"Complete the paragraph logically: 'Despite the heavy rainfall, the farmers were relieved. ___'",
+    options:["The drought had finally broken after months of dry spells.","The crops were destroyed by the flooding.","They decided to sell their land.","The government announced new tax reforms."], correct:0,
+    why:"'Relieved' despite heavy rainfall only makes sense if the rain was solving a prior problem - a drought - which this option supplies logically.",
+    trap:"The other options either contradict 'relieved' or introduce an unrelated idea that does not follow from the rainfall." },
+
+  { section:"VARC", tag:"VARC - Fact-Inference-Judgment", q:"\"All studies indicate that regular exercise improves cardiovascular health.\" This statement is best classified as a:",
+    options:["Fact based on research","Personal opinion","Inference without evidence","Judgment"], correct:0,
+    why:"The statement cites 'all studies indicate', grounding the claim in research evidence rather than personal belief - making it a fact-based statement.",
+    trap:"'Judgment' and 'opinion' would apply only if the claim expressed a value preference, which it does not here." },
+
+  { section:"VARC", tag:"VARC - Analogy", q:"Select the pair with the same relationship as: KEY : LOCK",
+    options:["Password : Account","Pen : Paper","Hammer : Nail","Needle : Thread"], correct:0,
+    why:"A key is the credential used to open a lock. Similarly, a password is the credential used to access an account - both are access-mechanism-to-secured-item pairs.",
+    trap:"Hammer:Nail and Needle:Thread are tool-to-material pairs, and Pen:Paper is tool-to-surface - none match the access relationship." },
+
+  { section:"DILR", tag:"DILR - Bar Graph", q:"A bar graph shows quarterly sales (in units): Q1=200, Q2=250, Q3=180, Q4=270. What is the average quarterly sales?",
+    options:["200","215","225","240"], correct:2,
+    why:"Total sales = 200+250+180+270 = 900. Average = 900/4 = 225.",
+    trap:"200 and 240 pick out individual quarters instead of averaging all four correctly." },
+
+  { section:"DILR", tag:"DILR - Table", q:"Marks (out of 50) for 5 students are: A-40, B-35, C-45, D-30, E-42. What percentage of students scored above 40?",
+    options:["20%","40%","60%","80%"], correct:1,
+    why:"Only C (45) and E (42) scored above 40 - that is 2 out of 5 students, i.e. (2/5) times 100 = 40%.",
+    trap:"A's score of exactly 40 is often wrongly counted as 'above 40', inflating the answer to 60%." },
+
+  { section:"DILR", tag:"DILR - Puzzle", q:"Five friends P, Q, R, S, T are ranked in a test with no ties. P ranks above Q. R ranks below S but above T. Q ranks above R. Who ranks the lowest?",
+    options:["P","Q","R","T"], correct:3,
+    why:"Combining the clues: P > Q > R > T, and separately S > R. Since T is below R, and R is below both Q and S, T is below everyone - T ranks lowest regardless of exactly where S falls.",
+    trap:"R looks low-ranked at first glance, but T is explicitly placed below R by the 'R ranks... above T' clue." },
+
+  { section:"DILR", tag:"DILR - Networks", q:"In a network, city A is connected directly to B and C; B is connected to D; C is connected to D. What is the minimum number of edges a courier must cross to go from A to D?",
+    options:["1","2","3","4"], correct:1,
+    why:"Both available paths - A to B to D, or A to C to D - cross exactly 2 edges, so the minimum is 2.",
+    trap:"1 wrongly assumes a direct A-D connection exists, which is not stated in the network." },
+
+  { section:"DILR", tag:"DILR - Number Series", q:"Find the next number in the series: 3, 8, 15, 24, 35, ?",
+    options:["46","48","50","52"], correct:1,
+    why:"Each term follows n(n+2): 1x3=3, 2x4=8, 3x5=15, 4x6=24, 5x7=35, 6x8=48.",
+    trap:"46, 50 and 52 come from continuing the difference pattern (5,7,9,11,13) with the wrong next gap." },
+
+  { section:"DILR", tag:"DILR - Data Sufficiency", q:"What is the value of x? Statement I: x + y = 10. Statement II: x - y = 4. Which statement(s) are sufficient?",
+    options:["Statement I alone is sufficient","Statement II alone is sufficient","Both statements together are sufficient, but neither alone","Each statement alone is sufficient"], correct:2,
+    why:"Neither equation alone fixes a unique x (y is unknown in each). Solving both together: adding them gives 2x=14, so x=7 - sufficient only when combined.",
+    trap:"Picking either statement alone ignores that each has two unknowns and infinitely many solutions on its own." },
+
+  { section:"DILR", tag:"DILR - Comparison", q:"In a family, X is taller than Y but shorter than Z. W is taller than Z. Who is the tallest?",
+    options:["W","X","Y","Z"], correct:0,
+    why:"Chaining the clues: W > Z > X > Y, so W is taller than everyone else mentioned.",
+    trap:"Z might seem tallest since X and Y are both compared to Z, but the W>Z clue overrides that." },
+
+  { section:"DILR", tag:"DILR - Series - Odd one out", q:"Find the odd one out: 27, 64, 100, 125",
+    options:["27","64","100","125"], correct:2,
+    why:"27=3 cubed, 64=4 cubed, and 125=5 cubed are all perfect cubes. 100 is a perfect square (10 squared) but not a perfect cube, making it the odd one out.",
+    trap:"100 looks like a 'round', unremarkable number, which can distract from checking it against the actual cube pattern." }
+];
+
+var pgQuestions = [
+  { section:"Quant", tag:"Quant - Simple Interest", q:"A sum of money doubles itself in 8 years at simple interest. In how many years will it become 4 times the original sum?",
+    options:["16 years","20 years","24 years","32 years"], correct:2,
+    why:"Doubling in 8 years means the interest earned equals the principal (P) in 8 years, so the rate is 12.5% per annum. To reach 4 times the sum, interest needed = 3P. Time = (3P times 100)/(P times 12.5) = 24 years.",
+    trap:"16 years wrongly assumes growth is proportional to time in simple proportion to the multiple, which only applies to compound interest, not simple interest." },
+
+  { section:"Quant", tag:"Quant - Number Series", q:"Find the odd one out: 121, 144, 169, 190",
+    options:["121","144","169","190"], correct:3,
+    why:"121 = 11 squared, 144 = 12 squared, 169 = 13 squared - all perfect squares. 190 is not a perfect square (13 squared is 169, 14 squared is 196), making it the odd one out.",
+    trap:"Picking any of the perfect squares means the pattern of consecutive squared integers was not spotted." },
+
+  { section:"Quant", tag:"Quant - Profit & Loss", q:"A man buys an article for Rs. 400 and sells it at a loss of 15%. Find the selling price.",
+    options:["Rs. 340","Rs. 360","Rs. 380","Rs. 320"], correct:0,
+    why:"Selling price = Cost price times (1 - loss%) = 400 times 0.85 = Rs. 340.",
+    trap:"360 comes from applying a 10% loss instead of 15%; 380 and 320 come from other arithmetic slips." },
+
+  { section:"Quant", tag:"Quant - Averages", q:"What is the average of the first 10 natural numbers?",
+    options:["5","5.5","6","10"], correct:1,
+    why:"Sum of first 10 natural numbers = 1+2+...+10 = 55. Average = 55/10 = 5.5.",
+    trap:"5 and 6 round the correct answer incorrectly; 10 mistakes the count for the average." },
+
+  { section:"Quant", tag:"Quant - Ratio", q:"The ratio of two numbers is 3:5 and their sum is 96. Find the smaller number.",
+    options:["30","36","40","48"], correct:1,
+    why:"Total parts = 3+5 = 8. Smaller number = (3/8) times 96 = 36.",
+    trap:"48 is half of 96, ignoring the ratio entirely; 30 and 40 come from using the wrong fraction of the total." },
+
+  { section:"Quant", tag:"Quant - Speed conversion", q:"A train travels 360 km in 4 hours. What is its speed in metres per second?",
+    options:["20 m/s","25 m/s","30 m/s","36 m/s"], correct:1,
+    why:"Speed = 360/4 = 90 km/hr. Converting: 90 times 5/18 = 25 m/s.",
+    trap:"36 m/s is the speed left in km/hr without converting; 20 and 30 come from an incorrect conversion factor." },
+
+  { section:"Quant", tag:"Quant - Compound Interest", q:"Find the compound interest on Rs. 5000 at 8% per annum for 2 years, compounded annually.",
+    options:["Rs. 800","Rs. 816","Rs. 832","Rs. 840"], correct:2,
+    why:"Amount = 5000 times (1.08)^2 = 5000 times 1.1664 = Rs. 5832. Compound interest = 5832 - 5000 = Rs. 832.",
+    trap:"800 is the simple interest for the same figures, not compound interest, which is always slightly higher over multiple years." },
+
+  { section:"Quant", tag:"Quant - Successive percentage", q:"What is 15% of 15% of 4000?",
+    options:["60","75","90","120"], correct:2,
+    why:"15% of 4000 = 600. 15% of 600 = 90.",
+    trap:"The other options come from applying only one of the two percentage steps or mis-multiplying." },
+
+  { section:"Reasoning", tag:"Reasoning - Number Series", q:"Find the missing number: 2, 6, 12, 20, 30, ?",
+    options:["36","40","42","44"], correct:2,
+    why:"The differences between consecutive terms are 4, 6, 8, 10, 12. Each term follows n(n+1): 1x2, 2x3, 3x4, 4x5, 5x6, 6x7 = 42.",
+    trap:"36, 40 and 44 come from continuing the difference pattern with the wrong increment." },
+
+  { section:"Reasoning", tag:"Reasoning - Blood Relations", q:"Pointing to a photograph, a man says, 'She is the daughter of my grandfather's only son.' How is the woman related to the man?",
+    options:["Sister","Daughter","Niece","Mother"], correct:0,
+    why:"The man's grandfather's only son is the man's own father (since the man himself is that son's child). The daughter of the man's father is the man's sister.",
+    trap:"'Niece' would only be correct if the son referred to were someone other than the speaker's own father, but the phrase 'only son' rules that out." },
+
+  { section:"Reasoning", tag:"Reasoning - Classification", q:"Find the odd one out: Apple, Mango, Potato, Banana",
+    options:["Apple","Mango","Potato","Banana"], correct:2,
+    why:"Apple, Mango and Banana are all fruits, while Potato is a vegetable - making it the odd one out.",
+    trap:"Any fruit chosen as the odd one out misses that three of the four items share the same category." },
+
+  { section:"Reasoning", tag:"Reasoning - Coding", q:"If CAT is coded as 312 and DOG is coded as 456, how would COD be coded in the same language?",
+    options:["354","345","453","435"], correct:0,
+    why:"From CAT=312: C=3, A=1, T=2. From DOG=456: D=4, O=5, G=6. For COD: C=3, O=5, D=4, giving 354.",
+    trap:"The other options rearrange the correct digits in a plausible-looking but incorrect order." },
+
+  { section:"Reasoning", tag:"Reasoning - Analogy", q:"Complete the analogy: BOOK : READ :: SONG : ?",
+    options:["Sing","Write","Listen","Compose"], correct:2,
+    why:"A book is consumed by reading it. In the same way, a song is consumed by listening to it - matching the consumer-action relationship.",
+    trap:"'Sing' and 'Compose' describe creating a song, not consuming it, which breaks the parallel with 'read'." },
+
+  { section:"Reasoning", tag:"Reasoning - Syllogism", q:"Statement: All doctors are engineers. All engineers are teachers. Conclusion: All doctors are teachers. Is this conclusion valid?",
+    options:["Valid","Invalid","Cannot be determined","Partially valid"], correct:0,
+    why:"This is a direct chain: if every doctor is an engineer, and every engineer is a teacher, then every doctor must also be a teacher. The conclusion follows purely from the given statements, regardless of real-world accuracy.",
+    trap:"It is tempting to call this invalid because the premise is factually odd, but syllogism validity only depends on logical structure, not real-world truth." },
+
+  { section:"Reasoning", tag:"Reasoning - Blood Relations", q:"A is the brother of B. B is the sister of C. C is the father of D. How is A related to D?",
+    options:["Uncle","Father","Brother","Grandfather"], correct:0,
+    why:"A is B's brother and B is C's sister, so A and C are siblings. Since C is D's father, A (C's sibling) is D's uncle.",
+    trap:"'Father' and 'Brother' confuse A's relationship to C with his relationship to D, who is one generation below." },
+
+  { section:"English", tag:"English - Sentence Correction", q:"Choose the correctly punctuated sentence.",
+    options:["Its a beautiful day, isnt it?","It's a beautiful day, isn't it?","Its a beautiful day, isn't it?","It's a beautiful day, isnt it?"], correct:1,
+    why:"Both contractions need apostrophes: 'It's' (it is) and 'isn't' (is not). Only the second option has both correctly punctuated.",
+    trap:"The other options are each missing one of the two required apostrophes." },
+
+  { section:"English", tag:"English - Preposition", q:"Fill in the blank: 'She has been working here ___ 2015.'",
+    options:["since","for","from","at"], correct:0,
+    why:"'Since' is used with a specific point in time (a year, date, or event) to show when a continuing action started. 'For' is used with a duration instead.",
+    trap:"'For' would be correct only if followed by a duration like 'for 9 years', not a specific year like 2015." },
+
+  { section:"English", tag:"English - Antonym", q:"Choose the antonym of ABUNDANT.",
+    options:["Plentiful","Scarce","Ample","Sufficient"], correct:1,
+    why:"'Abundant' means present in large quantities. Its opposite is 'scarce' - insufficient or hard to find.",
+    trap:"Plentiful, Ample and Sufficient are all near-synonyms of abundant, not opposites." },
+
+  { section:"English", tag:"English - Spelling", q:"Identify the correctly spelled word.",
+    options:["Recieve","Receive","Receeve","Recieeve"], correct:1,
+    why:"The correct spelling follows the 'i before e except after c' pattern for this word: R-E-C-E-I-V-E.",
+    trap:"The other options misplace or double the vowels incorrectly." },
+
+  { section:"English", tag:"English - One-word Substitution", q:"A person who can speak two languages is called:",
+    options:["Bilingual","Multilingual","Linguist","Translator"], correct:0,
+    why:"'Bilingual' specifically means able to speak two languages. 'Multilingual' means more than two, a 'linguist' studies language academically, and a 'translator' converts text between languages.",
+    trap:"Multilingual is the most common wrong pick since it sounds close, but it implies more than two languages." },
+
+  { section:"English", tag:"English - Passive Voice", q:"Choose the correct passive voice of: 'She is writing a letter.'",
+    options:["A letter is written by her.","A letter is being written by her.","A letter was being written by her.","A letter has been written by her."], correct:1,
+    why:"The original sentence is in present continuous tense ('is writing'), so the passive form must also be present continuous: 'is being written'.",
+    trap:"The other options shift the tense to simple present, past continuous, or present perfect, changing the meaning of the original sentence." },
+
+  { section:"Computer", tag:"Computer Awareness - Devices", q:"Which of the following is an INPUT device?",
+    options:["Printer","Monitor","Scanner","Speaker"], correct:2,
+    why:"A scanner captures data (images, text) into the computer, making it an input device. Printer, monitor and speaker are all output devices.",
+    trap:"Monitor and printer are the two output devices most often mistaken for input devices by beginners." },
+
+  { section:"Computer", tag:"Computer Awareness - Memory", q:"1 Kilobyte (KB) is equal to how many bytes?",
+    options:["1000","1024","100","1,048,576"], correct:1,
+    why:"In computing, 1 KB = 2 to the power 10 bytes = 1024 bytes, the binary convention used for memory sizing.",
+    trap:"1000 is the decimal/SI convention used for storage marketing, not for memory addressing; 1,048,576 is actually 1 MB, not 1 KB." },
+
+  { section:"Computer", tag:"Computer Awareness - Hardware", q:"Which of the following is known as the 'brain' of the computer?",
+    options:["RAM","CPU","Hard Disk","Motherboard"], correct:1,
+    why:"The CPU (Central Processing Unit) performs all the processing and calculations, which is why it is called the brain of the computer.",
+    trap:"RAM stores data temporarily, the hard disk stores data permanently, and the motherboard connects components - none of them process instructions." },
+
+  { section:"Computer", tag:"Computer Awareness - Memory types", q:"Which of the following is a volatile memory (loses data when power is off)?",
+    options:["ROM","RAM","Hard Disk","Pen Drive"], correct:1,
+    why:"RAM (Random Access Memory) is volatile - its contents are lost when the power is switched off. ROM, hard disks and pen drives all retain data without power.",
+    trap:"ROM sounds similar to RAM but is actually non-volatile, which is the opposite of what the question asks." },
+
+  { section:"Computer", tag:"Computer Awareness - Internet", q:"What does HTTP stand for?",
+    options:["HyperText Transfer Protocol","High Transfer Text Protocol","HyperText Technical Protocol","Home Tool Transfer Protocol"], correct:0,
+    why:"HTTP stands for HyperText Transfer Protocol, the foundational protocol used for transferring web pages over the internet.",
+    trap:"The other options rearrange similar-sounding words but do not match the actual expansion of the acronym." },
+
+  { section:"Computer", tag:"Computer Awareness - Shortcuts", q:"Which shortcut key is used to copy selected text?",
+    options:["Ctrl+C","Ctrl+V","Ctrl+X","Ctrl+Z"], correct:0,
+    why:"Ctrl+C is the standard shortcut for copying selected content. Ctrl+V pastes, Ctrl+X cuts, and Ctrl+Z undoes the last action.",
+    trap:"Ctrl+V and Ctrl+X are the next most-confused shortcuts since they are part of the same copy-paste-cut group." },
+
+  { section:"Computer", tag:"Computer Awareness - File types", q:"Which of the following file extensions is used for MS Excel files?",
+    options:[".docx",".xlsx",".pptx",".txt"], correct:1,
+    why:"'.xlsx' is the standard file extension for Microsoft Excel spreadsheet files.",
+    trap:"'.docx' is for Word documents and '.pptx' is for PowerPoint presentations - both from the same Office suite but different programs." },
+
+  { section:"GK", tag:"General Knowledge - Institutions", q:"The headquarters of the Reserve Bank of India (RBI) is located in which city?",
+    options:["New Delhi","Mumbai","Kolkata","Chennai"], correct:1,
+    why:"RBI's headquarters and central office have been located in Mumbai since 1937.",
+    trap:"New Delhi is often guessed because it is the national capital and hosts many regulatory bodies, but not the RBI's head office." },
+
+  { section:"GK", tag:"General Knowledge - Polity", q:"Who is known as the 'Father of the Indian Constitution'?",
+    options:["Mahatma Gandhi","Jawaharlal Nehru","Dr. B.R. Ambedkar","Sardar Patel"], correct:2,
+    why:"Dr. B.R. Ambedkar chaired the Drafting Committee of the Indian Constitution and is widely credited as its chief architect.",
+    trap:"Nehru and Patel were major Constituent Assembly leaders but did not chair the Drafting Committee; Gandhi was not a member of the Constituent Assembly at all." },
+
+  { section:"GK", tag:"General Knowledge - Geography", q:"Which is the largest Indian state by area?",
+    options:["Rajasthan","Madhya Pradesh","Maharashtra","Uttar Pradesh"], correct:0,
+    why:"Rajasthan is India's largest state by area, covering roughly 342,000 square kilometres.",
+    trap:"Madhya Pradesh is the second-largest and is often confused with the actual largest state." },
+
+  { section:"GK", tag:"General Knowledge - Culture", q:"The Sattriya dance form originates from which Indian state?",
+    options:["Assam","Odisha","Kerala","Manipur"], correct:0,
+    why:"Sattriya originated in the Vaishnavite monasteries (sattras) of Assam and is one of India's eight classical dance forms.",
+    trap:"Odisha, Kerala and Manipur are each home to their own distinct classical dance forms (Odissi, Mohiniyattam, Manipuri), which are commonly mixed up with Sattriya." },
+
+  { section:"GK", tag:"General Knowledge - Polity", q:"Which Article of the Indian Constitution abolishes untouchability?",
+    options:["Article 14","Article 15","Article 17","Article 21"], correct:2,
+    why:"Article 17 of the Indian Constitution abolishes 'untouchability' and forbids its practice in any form.",
+    trap:"Article 14 deals with equality before law, Article 15 with non-discrimination, and Article 21 with the right to life - all related but distinct fundamental rights." },
+
+  { section:"GK", tag:"General Knowledge - Geography", q:"The Tropic of Cancer does NOT pass through which of these Indian states?",
+    options:["Gujarat","Rajasthan","Kerala","Chhattisgarh"], correct:2,
+    why:"The Tropic of Cancer passes through 8 Indian states including Gujarat, Rajasthan and Chhattisgarh, but Kerala lies further south and is not among them.",
+    trap:"All the other three states are genuinely on the list of states the Tropic of Cancer crosses." },
+
+  { section:"GK", tag:"General Knowledge - History", q:"Who was the first woman President of India?",
+    options:["Pratibha Patil","Droupadi Murmu","Sarojini Naidu","Indira Gandhi"], correct:0,
+    why:"Pratibha Patil served as India's first woman President, from 2007 to 2012.",
+    trap:"Droupadi Murmu is a later woman President; Sarojini Naidu was a Governor, and Indira Gandhi was Prime Minister, not President." },
+
+  { section:"GK", tag:"General Knowledge - Economy", q:"The Reserve Bank of India was nationalised in which year?",
+    options:["1935","1947","1949","1955"], correct:2,
+    why:"The RBI was established in 1935 but was nationalised - brought under full government ownership - in 1949.",
+    trap:"1935 is when the RBI was founded (as a privately-owned institution at the time), which is often mistaken for the nationalisation year." },
+
+  { section:"Quant", tag:"Quant - Profit & Loss", q:"A shopkeeper allows a discount of 10% on the marked price and still makes a profit of 20%. If the cost price is Rs. 450, find the marked price.",
+    options:["Rs. 550","Rs. 580","Rs. 600","Rs. 620"], correct:2,
+    why:"Selling price = CP times 1.20 = 450 times 1.2 = Rs. 540. Since SP = MP times 0.90, MP = 540/0.9 = Rs. 600.",
+    trap:"550 and 620 come from applying the discount and markup as a simple percentage addition instead of compounding them correctly." },
+
+  { section:"Quant", tag:"Quant - Algebraic Identity", q:"Find the value of: 0.75 times 0.75 + 0.25 times 0.25 + 2 times 0.75 times 0.25",
+    options:["0.5","0.75","1","1.25"], correct:2,
+    why:"This matches the identity a squared + b squared + 2ab = (a+b) squared, with a=0.75, b=0.25. So the answer is (0.75+0.25) squared = 1 squared = 1.",
+    trap:"Calculating each of the three terms separately without spotting the identity often leads to a small arithmetic slip." },
+
+  { section:"Quant", tag:"Quant - HCF Application", q:"Two numbers are in the ratio 4:5. If their HCF is 6, find the two numbers.",
+    options:["18, 24","24, 30","20, 25","12, 15"], correct:1,
+    why:"When two numbers are in ratio 4:5 with HCF 6, the numbers are 4 times 6 = 24 and 5 times 6 = 30.",
+    trap:"20, 25 and 12, 15 use the ratio correctly but with the wrong multiplier instead of the given HCF." },
+
+  { section:"Quant", tag:"Quant - Ages", q:"A man's age is 4 times his son's age. After 5 years, his age will be 3 times his son's age at that time. Find the son's present age.",
+    options:["8 years","10 years","12 years","15 years"], correct:1,
+    why:"Let the son's age be x, so the man's age is 4x. After 5 years: 4x+5 = 3(x+5), giving 4x+5 = 3x+15, so x = 10.",
+    trap:"8 and 12 come from setting up the 'after 5 years' equation with the ratio applied to the wrong side." },
+
+  { section:"Quant", tag:"Quant - LCM", q:"Find the LCM of 12, 18 and 24.",
+    options:["48","60","72","96"], correct:2,
+    why:"12 = 2squared times 3, 18 = 2 times 3squared, 24 = 2cubed times 3. LCM takes the highest power of each prime: 2cubed times 3squared = 8 times 9 = 72.",
+    trap:"48 and 96 use an incomplete or extra factor of 2; 60 mixes in a factor of 5 that is not present in any of the numbers." },
+
+  { section:"Quant", tag:"Quant - Simple Interest", q:"A sum of Rs. 1200 is lent at 5% simple interest per annum. Find the interest after 3 years.",
+    options:["Rs. 150","Rs. 160","Rs. 180","Rs. 200"], correct:2,
+    why:"SI = (P times R times T)/100 = (1200 times 5 times 3)/100 = Rs. 180.",
+    trap:"150 and 160 come from using the wrong rate or time in the formula." },
+
+  { section:"Quant", tag:"Quant - Average Speed", q:"A car covers a distance at 60 km/hr and returns over the same distance at 40 km/hr. Find its average speed for the whole journey.",
+    options:["48 km/hr","50 km/hr","52 km/hr","55 km/hr"], correct:0,
+    why:"For equal distances, average speed = (2 times speed1 times speed2)/(speed1+speed2) = (2 times 60 times 40)/100 = 4800/100 = 48 km/hr.",
+    trap:"50 km/hr is the simple average of the two speeds, which is only valid for equal time, not equal distance." },
+
+  { section:"Quant", tag:"Quant - Ratio Adjustment", q:"What number should be subtracted from both terms of the ratio 15:19 to make it 3:4?",
+    options:["2","3","4","5"], correct:1,
+    why:"Let x be subtracted: (15-x)/(19-x) = 3/4. Cross-multiplying: 4(15-x) = 3(19-x), so 60-4x = 57-3x, giving x = 3.",
+    trap:"2 and 4 come from small arithmetic slips while cross-multiplying and simplifying the equation." },
+
+  { section:"Quant", tag:"Quant - Mensuration", q:"The perimeter of a rectangle is 60 cm and its length is twice its breadth. Find its area.",
+    options:["150 cm sq","180 cm sq","200 cm sq","220 cm sq"], correct:2,
+    why:"2(l+b)=60, so l+b=30. Since l=2b, 3b=30, giving b=10 and l=20. Area = l times b = 20 times 10 = 200 cm sq.",
+    trap:"150 and 180 come from solving for the breadth incorrectly before multiplying." },
+
+  { section:"Reasoning", tag:"Reasoning - Letter Series", q:"Find the missing term: AZ, BY, CX, ?",
+    options:["DW","DV","EW","DX"], correct:0,
+    why:"The first letter moves forward through the alphabet (A, B, C, D...) while the second letter moves backward (Z, Y, X, W...), giving DW.",
+    trap:"DV and EW break one half of the pattern while keeping the other, a common way this series is misread." },
+
+  { section:"Reasoning", tag:"Reasoning - Letter Coding", q:"In a certain code, TIGER is written as UJHFS. How is LION written in the same code?",
+    options:["MJPO","MJPQ","LJPO","MJQO"], correct:0,
+    why:"Each letter in the code shifts one place forward in the alphabet: T->U, I->J, G->H, E->F, R->S. Applying the same shift to LION: L->M, I->J, O->P, N->O gives MJPO.",
+    trap:"The other options apply the +1 shift to only some of the letters, breaking the consistent pattern." },
+
+  { section:"Reasoning", tag:"Reasoning - Blood Relations", q:"Pointing to a man, a woman said, 'His mother is the only daughter of my mother.' How is the woman related to the man?",
+    options:["Mother","Sister","Aunt","Grandmother"], correct:0,
+    why:"The only daughter of the woman's mother is the woman herself. So the man's mother is the woman - meaning the woman is the man's mother.",
+    trap:"'Aunt' would apply only if the 'only daughter' referred to someone other than the speaker, but 'only daughter of my mother' specifically means the speaker herself." },
+
+  { section:"Reasoning", tag:"Reasoning - Syllogism", q:"Statements: Some cats are dogs. All dogs are horses. Conclusions: I. Some cats are horses. II. All horses are dogs. Which conclusion(s) follow?",
+    options:["Only I","Only II","Both I and II","Neither I nor II"], correct:0,
+    why:"Since some cats are dogs, and all of those dogs are horses, those same cats must be horses too - so 'some cats are horses' logically follows. Conclusion II reverses the second statement, which is not valid.",
+    trap:"Conclusion II feels similar to the given statement 'all dogs are horses', but reversing a universal statement is a classic invalid step." },
+
+  { section:"Reasoning", tag:"Reasoning - Logical Sequencing", q:"Arrange the words in a logical order: 1. Seed 2. Tree 3. Fruit 4. Sapling 5. Flower",
+    options:["1,4,2,5,3","1,2,4,5,3","1,4,5,2,3","1,2,4,3,5"], correct:0,
+    why:"The natural growth sequence is Seed, then Sapling, then Tree, then Flower, then Fruit - giving the order 1,4,2,5,3.",
+    trap:"The other orderings place 'Tree' or 'Flower' before the plant has had time to develop through the earlier stage." },
+
+  { section:"Reasoning", tag:"Reasoning - Position/Ranking", q:"In a row of 40 students, Ravi is 12th from the left. What is his position from the right?",
+    options:["27th","28th","29th","30th"], correct:2,
+    why:"Position from the right = (total students - position from left) + 1 = (40-12)+1 = 29.",
+    trap:"28th forgets to add back 1 in the formula; 27th and 30th come from off-by-one slips in the other direction." },
+
+  { section:"Reasoning", tag:"Reasoning - Classification", q:"Find the odd one out: Triangle, Square, Circle, Pentagon",
+    options:["Triangle","Square","Circle","Pentagon"], correct:2,
+    why:"Triangle, Square and Pentagon are all polygons made of straight sides. A Circle has no straight sides or angles, making it the odd one out.",
+    trap:"It is easy to focus on the number of sides across the polygons and overlook that the real distinguishing feature is 'straight-sided vs curved'." },
+
+  { section:"Reasoning", tag:"Reasoning - Symbol Substitution", q:"If '+' means '÷', '-' means '×', '×' means '-', and '÷' means '+', evaluate: 8 × 4 ÷ 2 - 3 + 6",
+    options:["5","6","7","8"], correct:0,
+    why:"Replacing symbols with their new meanings gives: 8 - 4 + 2 times 3 ÷ 6. Following order of operations: 2 times 3 = 6, 6 ÷ 6 = 1, so 8 - 4 + 1 = 5.",
+    trap:"Solving left-to-right without respecting operator precedence after the substitution gives a different, incorrect result." },
+
+  { section:"English", tag:"English - Spelling", q:"Choose the correctly spelled word.",
+    options:["Accomodate","Acommodate","Accommodate","Acomodate"], correct:2,
+    why:"The correct spelling has a double 'c' and a double 'm': A-C-C-O-M-M-O-D-A-T-E.",
+    trap:"The other options each drop one of the two doubled letters, a very common spelling mistake for this word." },
+
+  { section:"English", tag:"English - Subject-Verb Agreement", q:"Fill in the blank: 'Neither the manager nor the employees ___ aware of the new policy.'",
+    options:["was","were","is","has been"], correct:1,
+    why:"With 'neither...nor' joining a singular and a plural subject, the verb agrees with the nearer subject - here 'employees' (plural) - so 'were' is correct.",
+    trap:"'was' wrongly agrees with the singular 'manager' instead of the noun closer to the verb." },
+
+  { section:"English", tag:"English - Synonym", q:"Choose the synonym of METICULOUS.",
+    options:["Careless","Careful","Hasty","Lazy"], correct:1,
+    why:"'Meticulous' means showing great attention to detail; very careful and precise - closest in meaning to 'careful'.",
+    trap:"'Careless' and 'hasty' are near-opposites of meticulous, describing a lack of care rather than an excess of it." },
+
+  { section:"English", tag:"English - Figures of Speech", q:"Identify the figure of speech used in: 'The wind whispered through the trees.'",
+    options:["Simile","Metaphor","Personification","Hyperbole"], correct:2,
+    why:"Giving the wind the human ability to 'whisper' attributes a human action to a non-living thing - this is personification.",
+    trap:"'Metaphor' is the most common wrong pick, but a metaphor equates two things directly rather than giving human traits to something non-human." },
+
+  { section:"English", tag:"English - One-word Substitution", q:"A person who loves and collects books is called:",
+    options:["Bibliophile","Philatelist","Numismatist","Linguist"], correct:0,
+    why:"'Bibliophile' specifically means a lover or collector of books. A philatelist collects stamps, a numismatist collects coins, and a linguist studies language.",
+    trap:"The other three options are all 'collector/expert' type words, which makes them tempting distractors if the specific meaning is not recalled precisely." },
+
+  { section:"English", tag:"English - Question Tags", q:"Choose the correct question tag: 'She doesn't like tea, ___?'",
+    options:["does she","doesn't she","isn't she","is she"], correct:0,
+    why:"A negative statement takes a positive question tag. Since the main verb is 'doesn't like' (negative), the tag must be positive: 'does she'.",
+    trap:"'doesn't she' repeats the negative form, but question tags must flip the polarity of the main clause, not match it." },
+
+  { section:"English", tag:"English - Preposition", q:"Fill in the blank with the correct preposition: 'He is good ___ mathematics.'",
+    options:["in","at","on","with"], correct:1,
+    why:"'Good at' is the standard idiomatic preposition used to describe skill or proficiency in a subject or activity.",
+    trap:"'good in' sounds plausible but is not the standard usage; 'on' and 'with' do not fit this idiom at all." },
+
+  { section:"English", tag:"English - Plurals", q:"Choose the correct plural form of 'Analysis'.",
+    options:["Analysises","Analyses","Analysis's","Analysi"], correct:1,
+    why:"Words ending in '-is' of Greek origin, like 'analysis', form their plural by changing '-is' to '-es': 'analyses'.",
+    trap:"'Analysises' applies the regular English plural rule, which does not apply to this Greek-derived word." },
+
+  { section:"English", tag:"English - Punctuation", q:"Identify the correctly punctuated sentence.",
+    options:["Where are you going, he asked.","'Where are you going?' he asked.","Where are you going he asked?","'Where are you going, he asked?'"], correct:1,
+    why:"Direct speech must be enclosed in quotation marks, and the question mark belongs inside the quotes since the quoted words form the question.",
+    trap:"The other options either drop the quotation marks entirely or place the question mark outside the quoted speech." },
+
+  { section:"Computer", tag:"Computer Awareness - Networking", q:"Which of the following is a valid IPv4 address format?",
+    options:["192.168.1.1","192.168.1.256","192.168.1","192.168.1.1.1"], correct:0,
+    why:"A valid IPv4 address has exactly four numbers between 0 and 255, separated by dots. '192.168.1.1' fits this format correctly.",
+    trap:"'192.168.1.256' looks correct at a glance, but 256 exceeds the maximum allowed value of 255 per segment." },
+
+  { section:"Computer", tag:"Computer Awareness - Programming", q:"Which of the following is a programming language?",
+    options:["HTML","Photoshop","Python","Windows"], correct:2,
+    why:"Python is a general-purpose programming language used to write executable logic. HTML is a markup language, Photoshop is design software, and Windows is an operating system.",
+    trap:"HTML is a very common wrong pick since it involves 'coding', but it only structures content and cannot express logic or computation like a true programming language." },
+
+  { section:"Computer", tag:"Computer Awareness - Basics", q:"What does CPU stand for?",
+    options:["Central Processing Unit","Computer Personal Unit","Central Program Unit","Computer Processing Utility"], correct:0,
+    why:"CPU stands for Central Processing Unit, the primary component that executes instructions in a computer.",
+    trap:"The other options rearrange similar-sounding words but do not match the real expansion of the acronym." },
+
+  { section:"Computer", tag:"Computer Awareness - Shortcuts", q:"Which shortcut key combination directly opens Task Manager in Windows?",
+    options:["Ctrl+Alt+Delete","Ctrl+Shift+Esc","Alt+F4","Ctrl+Esc"], correct:1,
+    why:"Ctrl+Shift+Esc opens Task Manager directly. Ctrl+Alt+Delete opens a security options screen from which Task Manager can also be reached, but it is not the direct shortcut.",
+    trap:"Ctrl+Alt+Delete is the most commonly known related shortcut, which is why it is a strong distractor here." },
+
+  { section:"Computer", tag:"Computer Awareness - Software", q:"Which of these is an example of an operating system?",
+    options:["MS Word","Windows","Excel","Chrome"], correct:1,
+    why:"Windows is an operating system that manages hardware and software resources. MS Word and Excel are applications, and Chrome is a web browser - all of which run on top of an operating system.",
+    trap:"All four options are common software names, so the distinction between 'operating system' and 'application software' is the key thing being tested." },
+
+  { section:"Computer", tag:"Computer Awareness - Internet", q:"What is the full form of URL?",
+    options:["Uniform Resource Locator","Universal Resource Locator","United Resource Link","Uniform Retrieval Locator"], correct:0,
+    why:"URL stands for Uniform Resource Locator, the address used to locate a resource on the internet.",
+    trap:"'Universal Resource Locator' sounds equally plausible but is not the standard, correct expansion." },
+
+  { section:"Computer", tag:"Computer Awareness - Devices", q:"Which device is used to convert digital signals to analog and vice versa for internet connectivity?",
+    options:["Router","Modem","Switch","Hub"], correct:1,
+    why:"A modem (modulator-demodulator) converts digital data from a computer into analog signals for transmission, and back again - enabling internet connectivity over telephone or cable lines.",
+    trap:"'Router' is the most common confusion since it is also a networking device, but a router directs data between networks rather than performing signal conversion." },
+
+  { section:"GK", tag:"General Knowledge - Personalities", q:"Who is known as the 'Missile Man of India'?",
+    options:["Homi Bhabha","Vikram Sarabhai","A.P.J. Abdul Kalam","C.V. Raman"], correct:2,
+    why:"Dr. A.P.J. Abdul Kalam, who led India's missile and space programmes and later became President, is popularly known as the 'Missile Man of India'.",
+    trap:"Homi Bhabha and Vikram Sarabhai are pioneers of India's nuclear and space programmes respectively, often confused with Kalam's missile-focused legacy." },
+
+  { section:"GK", tag:"General Knowledge - Geography", q:"Which is the longest river in India?",
+    options:["Yamuna","Godavari","Brahmaputra","Ganga"], correct:3,
+    why:"The Ganga is the longest river flowing within India, stretching over roughly 2,500 km from its source to the Bay of Bengal.",
+    trap:"The Brahmaputra is a major and very long river too, which makes it a strong but incorrect distractor here." },
+
+  { section:"GK", tag:"General Knowledge - Economy", q:"Which Indian city is popularly known as the 'Silicon Valley of India'?",
+    options:["Hyderabad","Bengaluru","Pune","Chennai"], correct:1,
+    why:"Bengaluru is widely known as the 'Silicon Valley of India' due to its concentration of IT companies and start-ups.",
+    trap:"Hyderabad and Pune are also major IT hubs, which is why they are commonly mistaken for the original 'Silicon Valley' title-holder." },
+
+  { section:"GK", tag:"General Knowledge - History", q:"Who was the first Prime Minister of India?",
+    options:["Lal Bahadur Shastri","Jawaharlal Nehru","Sardar Patel","Rajendra Prasad"], correct:1,
+    why:"Jawaharlal Nehru served as India's first Prime Minister, from 1947 until his death in 1964.",
+    trap:"Rajendra Prasad was India's first President, not Prime Minister - a very common mix-up between the two roles." },
+
+  { section:"GK", tag:"General Knowledge - Economy", q:"Which of the following best describes the role of the Reserve Bank of India?",
+    options:["Only public sector banks","Only private banks","All banks and monetary policy in India","Only foreign banks"], correct:2,
+    why:"The RBI is India's central bank - it regulates all banks operating in the country and controls monetary policy, currency issuance and financial stability.",
+    trap:"Limiting the RBI's role to just one category of banks understates its actual scope as the overarching central regulator." },
+
+  { section:"GK", tag:"General Knowledge - Geography", q:"Which is the smallest state in India by area?",
+    options:["Sikkim","Tripura","Goa","Nagaland"], correct:2,
+    why:"Goa is the smallest Indian state by area, covering roughly 3,700 square kilometres.",
+    trap:"Sikkim is the second-smallest state and is frequently mistaken for the smallest one." },
+
+  { section:"GK", tag:"General Knowledge - Polity", q:"The Indian Parliament consists of which of the following?",
+    options:["Lok Sabha only","Rajya Sabha only","Lok Sabha and Rajya Sabha","Lok Sabha, Rajya Sabha and Vidhan Sabha"], correct:2,
+    why:"The Indian Parliament is bicameral, made up of the Lok Sabha (House of the People) and the Rajya Sabha (Council of States), along with the President.",
+    trap:"'Vidhan Sabha' is a state-level legislative assembly, not a part of the national Parliament, making the fourth option incorrect." },
+
+  { section:"GK", tag:"General Knowledge - Culture", q:"Who wrote India's national anthem, 'Jana Gana Mana'?",
+    options:["Bankim Chandra Chatterjee","Rabindranath Tagore","Sarojini Naidu","Subhas Chandra Bose"], correct:1,
+    why:"Rabindranath Tagore composed 'Jana Gana Mana', which was adopted as India's national anthem in 1950.",
+    trap:"Bankim Chandra Chatterjee wrote 'Vande Mataram' (the national song, not the anthem), a frequent point of confusion between the two." }
+];
+
+function buildQuiz(containerId, questions, scoreElId, storeKey, resetBtnId, filterElId){
+  var el = document.getElementById(containerId);
+  var scoreEl = document.getElementById(scoreElId);
+  var filterEl = document.getElementById(filterElId);
+  var attempts = {};
+  try{ attempts = JSON.parse(localStorage.getItem(storeKey) || '{}'); }catch(e){ attempts = {}; }
+
+  function updateScore(){
+    var correct=0, total=0;
+    Object.keys(attempts).forEach(function(k){ total++; if(attempts[k].correct) correct++; });
+    scoreEl.textContent = correct+' / '+total;
+  }
+
+  function render(){
+    el.innerHTML = questions.map(function(q,i){
+      var attempt = attempts[i];
+      var optsHtml = q.options.map(function(opt,oi){
+        var cls='opt-btn';
+        if(attempt){
+          if(oi===q.correct) cls+=' correct';
+          else if(oi===attempt.picked) cls+=' wrong';
+        }
+        return '<button class="'+cls+'" data-qi="'+i+'" data-oi="'+oi+'" '+(attempt?'disabled':'')+'>'+
+          '<span class="opt-letter">'+String.fromCharCode(65+oi)+'</span><span>'+opt+'</span></button>';
+      }).join('');
+
+      var explainHtml = '';
+      if(attempt){
+        var isCorrect = attempt.correct;
+        explainHtml = '<div class="explain show '+(isCorrect?'ok':'no')+'">'+
+          '<b>'+(isCorrect ? 'Correct - the reasoning' : 'Not quite - here is the reasoning')+'</b>'+
+          q.why + (!isCorrect ? '<br><br><b style="margin-top:8px;">Why the trap options are wrong</b>'+q.trap : '') +
+        '</div>';
+      }
+
+      return '<div class="q-card" data-section="'+q.section+'">'+
+        '<div class="q-meta"><span class="q-tag">'+q.tag+'</span><span class="q-num">Question '+(i+1)+' of '+questions.length+'</span></div>'+
+        '<p class="q-text">'+q.q+'</p>'+
+        '<div class="opt-list">'+optsHtml+'</div>'+
+        explainHtml+
+      '</div>';
+    }).join('');
+    applyFilter();
+  }
+
+  function applyFilter(){
+    if(!filterEl) return;
+    var val = filterEl.value;
+    el.querySelectorAll('.q-card').forEach(function(card){
+      card.style.display = (val==='all' || card.dataset.section===val) ? '' : 'none';
+    });
+  }
+
+  el.addEventListener('click', function(e){
+    var btn = e.target.closest('.opt-btn');
+    if(!btn || btn.disabled) return;
+    var qi = +btn.dataset.qi;
+    var oi = +btn.dataset.oi;
+    if(attempts[qi]) return;
+    attempts[qi] = { picked: oi, correct: oi === questions[qi].correct };
+    try{ localStorage.setItem(storeKey, JSON.stringify(attempts)); }catch(e){}
+    render();
+    updateScore();
+  });
+
+  document.getElementById(resetBtnId).addEventListener('click', function(){
+    attempts = {};
+    try{ localStorage.removeItem(storeKey); }catch(e){}
+    render();
+    updateScore();
+  });
+
+  if(filterEl){ filterEl.addEventListener('change', applyFilter); }
+
+  render();
+  updateScore();
+}
+
+var catQuizInit=false, pgQuizInit=false;
+function initCatQuiz(){ if(catQuizInit) return; catQuizInit=true; buildQuiz('catQuiz', catQuestions, 'catScore', 'mission100_cat_quiz_v3', 'catReset', 'catFilter'); }
+function initPgQuiz(){ if(pgQuizInit) return; pgQuizInit=true; buildQuiz('pgQuiz', pgQuestions, 'pgScore', 'mission100_pg_quiz_v3', 'pgReset', 'pgFilter'); }
+// Build immediately if the practice tab happens to already be the active one on load.
+if(document.getElementById('cat-practice') && document.getElementById('cat-practice').classList.contains('active')) initCatQuiz();
+if(document.getElementById('pg-practice') && document.getElementById('pg-practice').classList.contains('active')) initPgQuiz();
+
+})();
+</script>
+</body>
+</html>
